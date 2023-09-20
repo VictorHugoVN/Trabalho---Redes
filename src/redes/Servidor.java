@@ -19,7 +19,7 @@ class Servidor {
             // Get request from client
             socket = ss.accept();
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            clientRequest = reader.readLine();
+            clientRequest = reader.readLine().replace("#", "").strip();
             System.out.println("[TCPServer] Get request [" + clientRequest + "] from Client.");
  
             // Send response to client
