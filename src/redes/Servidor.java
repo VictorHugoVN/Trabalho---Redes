@@ -28,6 +28,5 @@ class Servidor {
             outputStream.println(responseToClient);
             System.out.println("[TCPServer] Send out response [" + responseToClient + "] to Client.");
         }
-        // Isso é um teste
     }
 }
