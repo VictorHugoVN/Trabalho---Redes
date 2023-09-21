@@ -19,7 +19,7 @@ class Servidor {
             // Get request from client
             socket = ss.accept();
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            clientRequest = reader.readLine().replace("#", "").strip();
+            clientRequest = reader.readLine().replace("#", "").strip(); // Mensagem do cliente
             System.out.println("[TCPServer] Get request [" + clientRequest + "] from Client.");
  
             // Send response to client
@@ -28,5 +28,6 @@ class Servidor {
             outputStream.println(responseToClient);
             System.out.println("[TCPServer] Send out response [" + responseToClient + "] to Client.");
         }
+        // Isso é um teste
     }
 }
