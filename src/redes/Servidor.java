@@ -18,9 +18,10 @@ class Servidor {
         while (true) {
             // Get request from client
             socket = ss.accept();
-            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            clientRequest = reader.readLine().replace("#", "").strip(); // Mensagem do cliente
-            System.out.println("[TCPServer] Get request [" + clientRequest + "] from Client.");
+            reader = new BufferedReader(new InputStreamReader(socket.getInputStream())); // CONSIDERAR TRATAMENTO DE EXÇÃO!!!!
+            clientRequest = reader.readLine().replace(" ", "");// Mensagem do cliente
+            String novaMensagem = clientRequest.substring(clientRequest.indexOf("#")+1, clientRequest.length()-1); // ANALISAR
+            System.out.println("[TCPServer] Get request [" + novaMensagem + "] from Client.");
  
             // Send response to client
             outputStream = new PrintStream(socket.getOutputStream());
