@@ -1,0 +1,24 @@
+## RFC - Documentação ##
+
+#login/#
+#escolhaXO/#
+    #voceÉX/#
+    #voceÉO/#
+#prontopJogar/#
+    #jogada/#
+        #simbolo/#
+            #posicaoTab/#
+                #linha/#
+            #posicaoTab/#
+                #coluna/#
+#checkLinha/#
+#checkColuna/#
+#checkDiagonal/#
+#posValida/#
+#posInvalida/#
+#jogadorXganhou/#
+#jogadorXperdeu/#
+#jogadorOganhou/#
+#jogadorOperdeu/#
+
+        
