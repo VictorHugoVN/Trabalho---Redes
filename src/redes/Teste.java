@@ -16,6 +16,8 @@ public class Teste {
         nova = nova.trim(); // Retira possíveis espaços em branco antes ou depois da string desejada
         System.out.println(nova.length()); // Tamanho da string
 
+        
+
     }
 
 }
