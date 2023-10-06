@@ -5,30 +5,38 @@ import java.util.Scanner;
 
 public class JogoDaVelha {
 
-	public static void main(String[] args) {
+		
+	public void game(String jogador1, String jogador2){
 		Scanner input = new Scanner (System.in);
 		String[][] matriz = new String[3][3];
         String opc;
         int posicao_y;
         int posicao_x;
-        String jogador1;
-        String jogador2;
+        //String jogador1;
+        //String jogador2;
         String simbolo = "X";
         boolean sair = false;
 
-         System.out.print("Jogador X: ");
-         jogador1 = input.next();
-         System.out.print("Jogador O: ");
-         jogador2 = input.next();
+         //System.out.print("Jogador X: ");
+        // jogador1 = input.next();
+         //.out.print("Jogador O: ");
+         // = input.next();
 
          try {
          	do {    
         		 for (int cont = 0; cont < 9; cont++) { 
         			 do {
-	                     System.out.print("Digite a posição horizontal: ");
+						if(cont % 2 != 0){
+	                     System.out.print(jogador2 +" Digite a posição horizontal: ");
 	                     posicao_y = input.nextInt();
-	                     System.out.print("Digite a posição vertical: ");
+	                     System.out.print(jogador2 + " Digite a posição vertical: ");
 	                     posicao_x = input.nextInt();
+						}else{
+						 System.out.print(jogador1 +" Digite a posição horizontal: ");
+	                     posicao_y = input.nextInt();
+	                     System.out.print(jogador1 +" Digite a posição vertical: ");
+	                     posicao_x = input.nextInt();
+						}
 	                 } while (posicao_y <= 0 || posicao_y > 3 ||
 	                          posicao_x <= 0 || posicao_x > 3 ||
 	                          matriz[posicao_y - 1][posicao_x - 1] != null);
@@ -90,7 +98,7 @@ public class JogoDaVelha {
          	} while (opc.toUpperCase().equals("S"));
         } catch (InputMismatchException e) {
    			System.out.println("Você digitou o valor errado!");
-   			main(null);
+   			//game(null);
    		} catch (Exception e) {
    			System.out.println("ERRO!");
    			e.printStackTrace();
@@ -99,5 +107,4 @@ public class JogoDaVelha {
         System.out.println("Obrigado por testar o programa!");	
      	input.close();
 	}
-	
 }

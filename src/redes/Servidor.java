@@ -3,16 +3,18 @@ package redes;
 import java.io.*;
 import java.net.*;
 import java.util.List;
+import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
  
 class Servidor {
     public static void main(String args[]) throws Exception {
+        
         int port = 8722;
         Socket socket = null;
         BufferedReader reader = null; // Leitor local do cliente
         PrintStream outputStream = null; // Fluxo de saída para o cliente
         String nomeCliente = "";
-        //List <String> listaNomes = new ArrayList<String>();
         String nomes[] = new String[2];
 
         String clientRequest = "";
@@ -36,6 +38,8 @@ class Servidor {
             
             outputStream.println(responseToClient); // AQUI
             System.out.println("[TCPServer] Send out response [" + responseToClient + "] to Client.");
+
+            
             if(responseToClient.equals("LOGIN")){
                 
                 //RETORNAR UM CÓDIGO PARA O CLIENTE, PARA ENTÃO PEGAR O NOME?
@@ -51,10 +55,4 @@ class Servidor {
             }
         }
     }
-
-    public static void jogoDaVelha(){
-        System.out.println("Iniciando o jogo da velha!");
-    }
-
-
 }
