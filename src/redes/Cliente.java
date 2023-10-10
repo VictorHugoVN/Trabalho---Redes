@@ -9,7 +9,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.List;
  
-class Cliente {
+public class Cliente {
     public static void main(String args[]) throws Exception {
 
         String serverName = "localhost";
@@ -54,11 +54,11 @@ class Cliente {
                 System.out.println("Digite o seu nome: ");
                 System.out.flush();
                 toServer.println(inFromUser.readLine()); //envia para o servidor o nome do cliente
+                /// o que posso fazer aqui é o servidor pegar o nome dos clientes e retornar para os 2 clientes a lista de nomes para que a thread possa
             }
             if(responseFromServer.equals("JOGAR")){
-                String nomeJogador = fromServer.readLine();
-                for(int i =0 ; i < 2; i++)
-                System.out.println("oioi");
+            
+                System.out.println("Inicializando jogo");
                 
                 //userInput = "quit";
             }
