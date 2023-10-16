@@ -1,19 +1,25 @@
-package redes;
+package jogoDaVelha;
 
+import java.io.Serializable;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class JogoDaVelha {
+public class Jogo implements Serializable{
+		// serializable servirá para que eu possa passar esses metodos apos instaciar a classo como objeto
+		private String jogador1;
+		private String jogador2;
 
-		
-	public void game(String jogador1, String jogador2){
+		public Jogo(String nome1, String nome2){
+			this.jogador1 = nome1;
+			this.jogador2 = nome2;
+		}
+
+	public void game(){
 		Scanner input = new Scanner (System.in);
 		String[][] matriz = new String[3][3];
         String opc;
         int posicao_y;
         int posicao_x;
-        //String jogador1;
-        //String jogador2;
         String simbolo = "X";
         boolean sair = false;
 

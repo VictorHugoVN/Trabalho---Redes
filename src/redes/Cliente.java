@@ -3,20 +3,22 @@ package redes;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.InputMismatchException;
-import java.util.Scanner;
-import java.util.List;
- 
+import jogoDaVelha.Jogo; 
+
 public class Cliente {
     public static void main(String args[]) throws Exception {
 
         String serverName = "localhost";
         int port = 8724; // Same port number with the server
         Socket socket = null;
-        PrintStream toServer = null; 
-        BufferedReader fromServer = null;
+        ObjectOutputStream toServer = null; 
+        ObjectInputStream  fromServer = null;
+        //String nome[] = new String[2];
+        Jogo c ;
+         String[] nome = new String[2];
 
         System.out.println("Cliente TCP iniciado, usando servidor: " + serverName + ", Porta: " + port);
  
@@ -39,28 +41,31 @@ public class Cliente {
  
             
             // Enviando entrada do usuário para o servidor
-            toServer = new PrintStream(socket.getOutputStream()); 
-            toServer.println(userInput);
+            toServer = new ObjectOutputStream(socket.getOutputStream()); 
+            toServer.writeObject(userInput);
             System.out.println("[TCPClient] Enviar entrada do usuário [" + userInput + "] ao Servidor.");
  
             // Recebendo resposta do servidor, recebende de volta as tags.
-            fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            String responseFromServer = fromServer.readLine();
-            System.out.println("[TCPClient] Obtenha resposta [" + responseFromServer + "] do servidor.");
+            fromServer = new ObjectInputStream (socket.getInputStream());
+            String responseFromServer = (String) fromServer.readObject();
+            System.out.println("[TCPClient] resposta: [" + responseFromServer + "], do servidor.");
 
             try{
             if(responseFromServer.equals("LOGIN")){
                 // pegando nome
                 System.out.println("Digite o seu nome: ");
                 System.out.flush();
-                toServer.println(inFromUser.readLine()); //envia para o servidor o nome do cliente
+                toServer.writeObject(inFromUser.readLine()); //envia para o servidor o nome do cliente
                 /// o que posso fazer aqui é o servidor pegar o nome dos clientes e retornar para os 2 clientes a lista de nomes para que a thread possa
             }
             if(responseFromServer.equals("JOGAR")){
-            
-                System.out.println("Inicializando jogo");
-                
-                //userInput = "quit";
+
+               toServer.writeObject("JOGAR");
+               System.out.println("Inicializando jogo Multiplayer");
+                String nome1 =(String) fromServer.readObject();
+                String nome2 = (String) fromServer.readObject();
+               Jogo jogada = new Jogo(nome1, nome2);
+                jogada.game();
             }
             
         }catch(IOException e){
