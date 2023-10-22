@@ -15,6 +15,7 @@ class Cliente {
         Socket socket = null;
         PrintStream toServer = null;
         BufferedReader fromServer = null;
+        String nomeCliente = "";
  
         System.out.println("Cliente TCP iniciado, usando servidor: " + serverName + ", Porta: " + port);
  
@@ -22,10 +23,11 @@ class Cliente {
         BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
         String userInput = "";
         do {
-            System.out.print("Digite qualquer string agora, (quit) para finalizar: ");
+            System.out.print("Digite qualquer string agora: ( #quit/# para finalizar ) ");
             System.out.flush();
             userInput = inFromUser.readLine().replace(" ", "");// aqui pega a string !!!!
             userInput = userInput.substring(userInput.indexOf("#")+1, userInput.indexOf("/#"));
+            //System.out.println("USER INPUT -> " + userInput);
             if (userInput.equalsIgnoreCase("quit")) {
                 break;
             }
@@ -46,21 +48,48 @@ class Cliente {
             // Recebendo resposta do servidor
             fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String responseFromServer = fromServer.readLine(); // AQUI
+            //toServer.println(responseFrom)
             System.out.println("[TCPClient] Obtenha resposta [" + responseFromServer + "] do servidor.");
             if(responseFromServer.equals("LOGIN")){
                 // pegando nome
                 System.out.println("Digite o seu nome: ");
                 System.out.flush();
-                //String nome = inFromUser.readLine();
+                nomeCliente = inFromUser.readLine();
                 // enviando nome
-                toServer.println(inFromUser.readLine());
+                toServer.println(nomeCliente);
             }
             if(responseFromServer.equals("JOGAR")){
+
+                String msgServer = fromServer.readLine();
+
+                if(msgServer.equals("aguarde")){
+                    System.out.println("Ainda não temos dois jogadores, aguarde!");
+                }else if(msgServer.equals("ok")){
+                    String n1 = fromServer.readLine();
+                    String n2 = fromServer.readLine();
+                    if(n1 != null && n2 != null){
+                        Cliente c = new Cliente();
+                        if(nomeCliente.equals(n1)){ // Posso fazer esperar aqui?????
+                            c.jogoDaVelha(n1, n2, toServer, fromServer, "X");
+                        }else if(nomeCliente.equals(n2)){
+                            c.jogoDaVelha(n1, n2, toServer, fromServer, "O");
+                        }
+                        
+                    }
+                    userInput = "#quit/#";
+                }
+
                 
-                String nomeJogador = fromServer.readLine();
+                /*String nomeJogador = fromServer.readLine();
+                String simb = null;
+                if(nomeJogador.equals("Thread-1")){
+                    simb = "X";
+                }else if(nomeJogador.equals("Thread-3")){
+                    simb = "O";
+                }
                 Cliente c = new Cliente();
-                c.jogoDaVelha(nomeJogador);
-                userInput = "quit";
+                c.jogoDaVelha(nomeJogador, toServer, simb, fromServer);
+                userInput = "quit";*/
             }
 
         } while (!userInput.equals("quit")); // Encerre o cliente se 'quit' for uma entrada
@@ -71,17 +100,23 @@ class Cliente {
         }
     }
 
-    public void jogoDaVelha(String nome1){
+    // simb = x ou o
+    public void jogoDaVelha(String nome1, String nome2, PrintStream toServer, BufferedReader fromServer, String simb){
         Scanner input = new Scanner (System.in);
 		String[][] matriz = new String[3][3];
         String opc;
-        int posicao_y;
+        String pos_y;
+        String pos_x;
         int posicao_x;
+        int posicao_y;
+        PrintStream toServerr = toServer;
+        BufferedReader fromServerr = fromServer;
+
 
 
         String jogador1 = nome1;
         String jogador2 = "Segundo Jogador";
-        String simbolo = "X";
+        String simbolo = simb;
         boolean sair = false;
 
          //System.out.print("Jogador X: ");
@@ -93,18 +128,29 @@ class Cliente {
          	do {    
         		 for (int cont = 0; cont < 9; cont++) { 
         			 do {
-	                     System.out.print("Digite a posição horizontal: ");
-	                     posicao_y = input.nextInt();
-	                     System.out.print("Digite a posição vertical: ");
-	                     posicao_x = input.nextInt();
+                            
+	                        System.out.print("Digite a posição horizontal: ");
+	                        pos_y = input.nextLine();
+                            toServerr.println(pos_y); // Enviando posição da linha
+	                        
+                            System.out.print("Digite a posição vertical: ");
+	                        pos_x = input.nextLine();                            
+                            toServerr.println(pos_x); // Enviando posição da coluna
+                            toServerr.println(simb);
+
+                            posicao_x = Integer.parseInt(pos_x);
+                            posicao_y = Integer.parseInt(pos_y);
+
 	                 } while (posicao_y <= 0 || posicao_y > 3 ||
 	                          posicao_x <= 0 || posicao_x > 3 ||
 	                          matriz[posicao_y - 1][posicao_x - 1] != null);
 	
+                    //Não precisaremos
 	                 matriz[posicao_y - 1][posicao_x - 1] = simbolo;
 	
-	                 for (int y = 0; y < 3; y++) {
-	                     for (int x = 0; x < 3; x++) {
+                     /*
+	                 for (int y = 0; y < 3; y++) { //VERIFICAÇÃO DE VENCEDOR(A), levar para o sevidor!
+	                     for (int x = 0; x < 3; x++) {//Verifica se alguém venceu
 	                    	 if ((matriz[y][0] == "X" && matriz[y][1] == "X" && matriz[y][2] == "X") ||
 		                             (matriz[y][0] == "O" && matriz[y][1] == "O" && matriz[y][2] == "O") ||
 		                             (matriz[0][x] == "X" && matriz[1][x] == "X" && matriz[2][x] == "X") ||
@@ -117,7 +163,7 @@ class Cliente {
 		                             break;
 		                     }
 	                    	 
-	                         if (matriz[y][x] == null)
+	                         if (matriz[y][x] == null) //Imprimindo Matriz
 	                             System.out.print("[_]");
 	                         else
 	                             System.out.print("[" + matriz[y][x] + "]");
@@ -127,7 +173,23 @@ class Cliente {
 	                         break;
 	
 	                     System.out.println();
-	                 }
+	                 } // Fim verificação*/
+
+
+                     //Receber posições já usadas
+                     for (int y = 0; y < 3; y++) { 
+	                     for (int x = 0; x < 3; x++) {
+
+                            String s = fromServerr.readLine();
+                            matriz[y][x] = s;
+
+                            if (matriz[y][x].equals(null)) //Imprimindo Matriz
+                                System.out.print("[_]");
+                            else
+                                System.out.print("[" + matriz[y][x] + "]");
+                         }
+                         System.out.println();
+                    }
 	
 	                 if (sair == true) 
 	                     break;
