@@ -16,9 +16,13 @@ public class ThreadSockets extends Thread{
 	}
 	
 	
-	
+	@Override
 	public void run() {
 		try {
+
+			
+			
+			
 			// 1 - Definir stream de saída de dados do servidor
 			DataInputStream entrada = new DataInputStream(cliente.getInputStream());
 			String mensagem = entrada.readUTF();
@@ -34,6 +38,7 @@ public class ThreadSockets extends Thread{
 			
 			// 4 - Fechar socket de comunicação
 			cliente.close();
+			
 			
 		}catch(IOException ioe) {
 			System.out.println("Erro: " + ioe.toString());

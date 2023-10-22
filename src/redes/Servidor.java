@@ -23,6 +23,8 @@ class Servidor {
         while (true) {
             // Recebendo solicitação do cliente
             socket = ss.accept();
+            System.out.println("Cliente " + ss.getInetAddress().getHostAddress() + " conectado!");
+
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream())); // CONSIDERAR TRATAMENTO DE EXÇÃO!!!!
             clientRequest = reader.readLine();// Mensagem do cliente
             //String novaMensagem = clientRequest.substring(clientRequest.indexOf("#")+1, clientRequest.indexOf("/#")); // ANALISAR
@@ -36,6 +38,7 @@ class Servidor {
             
             outputStream.println(responseToClient); // AQUI
             System.out.println("[TCPServer] Send out response [" + responseToClient + "] to Client.");
+            
             if(responseToClient.equals("LOGIN")){
                 
                 //RETORNAR UM CÓDIGO PARA O CLIENTE, PARA ENTÃO PEGAR O NOME?
@@ -50,10 +53,6 @@ class Servidor {
                 // PASSAR TAMBÉM LISTA COM POSIÇÕES JÁ USADAS
             }
         }
-    }
-
-    public static void jogoDaVelha(){
-        System.out.println("Iniciando o jogo da velha!");
     }
 
 
