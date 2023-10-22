@@ -9,6 +9,7 @@ import java.net.Socket;
 import jogoDaVelha.Jogo; 
 
 public class Cliente {
+
     public static void main(String args[]) throws Exception {
 
         String serverName = "localhost";
@@ -18,7 +19,7 @@ public class Cliente {
         ObjectInputStream  fromServer = null;
         //String nome[] = new String[2];
         Jogo c ;
-         String[] nome = new String[2];
+         String[] nome = new String[3];
 
         System.out.println("Cliente TCP iniciado, usando servidor: " + serverName + ", Porta: " + port);
  
@@ -62,10 +63,7 @@ public class Cliente {
 
                toServer.writeObject("JOGAR");
                System.out.println("Inicializando jogo Multiplayer");
-                String nome1 =(String) fromServer.readObject();
-                String nome2 = (String) fromServer.readObject();
-               Jogo jogada = new Jogo(nome1, nome2);
-                jogada.game();
+              
             }
             
         }catch(IOException e){
