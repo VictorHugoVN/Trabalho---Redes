@@ -1,6 +1,7 @@
 package redes;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -15,7 +16,7 @@ public class ThreadSockets extends Thread{
 	private static String nomes [] = new String[3];
 	private String nomeJogador = "";
 	private String nomeJogador2 = "";
-
+ 
 
 	public ThreadSockets(Socket s){
 		this.cliente = s;
@@ -83,18 +84,18 @@ public class ThreadSockets extends Thread{
 			String responseToClientC1 = "";
        		String nomeCliente1 = "";
        		ObjectOutputStream outputStream = null;// Fluxo de saída para o cliente
-       	
+				
 
 					/////// TRATA AS INFORMAÇÕES DO  CLIENTE  QUE SE CONECTA //////////
 					ObjectInputStream readerC1 = new ObjectInputStream (getCliente().getInputStream()); // serve para que eu consiga ler o que foi enviado pelo cliente
 					String clientRequestC1 = (String) readerC1.readObject();// Mensagem do cliente
 					String novaMensagemC1 = clientRequestC1;
-					System.out.println("[TCPServer] pegou solicitação [" + novaMensagemC1 + "] do cliente.");
+					System.out.println("[TCPServer - Thread] pegou solicitação [" + novaMensagemC1 + "] do cliente " + contadorCliente + ".");
 
 					// Enviando resposta ao cliente
 					outputStream = new ObjectOutputStream (getCliente().getOutputStream());
 					responseToClientC1 = novaMensagemC1.toUpperCase();
-					System.out.println("[TCPServer] enviando resposta [" + responseToClientC1 + "] para o cliente.");
+					System.out.println("[TCPServer - Thread] enviando resposta [" + responseToClientC1 + "] para o cliente " + contadorCliente + ".");
 					outputStream.writeObject(responseToClientC1); //mandando de volta uma resposta para o cliente
 	
 				try{
@@ -105,16 +106,28 @@ public class ThreadSockets extends Thread{
 						System.out.println("Nome do jogador " + contadorCliente + " é  -> "  + nomeCliente1);  // *** um problema aqui é que eu n da pra passar essa lista para a thread executar o jogo antes do outro cliente se conectar
 						nomes[contadorCliente] = nomeCliente1;// colocando no arrey de nomes para que eu possa passar para a thread
 					
-					}else if(contadorCliente == 1){
-
-						System.out.println(" Aguarde um parceiro de jogo !!! ");
-
 					}else if(responseToClientC1.equals("JOGAR")){
+						int posicao[] = new int[9];
+
+						if(contadorCliente == 1 ){
+                            
+							int posicao_y;
+							int posicao_x;
+							DataInputStream posicoesFromClient = new DataInputStream(getCliente().getInputStream());
+							posicao_y = posicoesFromClient.readInt();
+							posicao_x = posicoesFromClient.readInt();
+
+                            posicao[0] = posicao_y;
+							posicao[1] = posicao_x;
+					
+							
+						}else if (contadorCliente == 2){
+
+						System.out.println("por favor aguarde o jogador X adicionar as posições");
 						
-						setNomeJogador(nomes[1]);
-						setNomeJogador2(nomes[2]);
-						Jogo j = new Jogo();
-						j.game(getNomeJogador(), getNomeJogador2());
+		
+						
+					}
 						
 					}
 						}catch (IOException e){

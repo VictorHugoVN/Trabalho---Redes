@@ -5,7 +5,7 @@ import java.io.ObjectOutputStream;
 import java.net.*;
  
 public class Servidor {
-    private static int contadorThreads = -1;
+    //private static int contadorThreads = -1;
         
 
     public static void main(String args[]  ) throws Exception {
@@ -18,18 +18,19 @@ public class Servidor {
         System.out.println("TCP Server is starting up, listening at port " + port + ".");
 
         while(true){
+          
         socketC1 = ss.accept();// aceita conexão Cliente 1;
         socketC2 = ss.accept();// aceita conexão do cliente 2;
        
 
        
-        
+        Thread clienteThread = new Thread(new ThreadSockets(socketC2, 2));
+         clienteThread.start();
         Thread ClienteThread2 = new Thread(new ThreadSockets(socketC1, 1));
         ClienteThread2.start();
-         
-       
-         Thread clienteThread = new Thread(new ThreadSockets(socketC2, 2));
-         clienteThread.start();
+        
+        System.out.println("O Servidor acessou a thread (passou as credenciais do socket parta a thread). ");
+        
 
        
                 

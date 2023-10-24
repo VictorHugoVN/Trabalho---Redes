@@ -15,7 +15,7 @@ public class Jogo implements Serializable{
 
 		//public Jogo(String nome1, String nome2){
 			//this.jogador1 = nome1;
-			//.jogador2 = nome2;
+			//this.jogador2 = nome2;
 		//}
 		
 
@@ -36,6 +36,7 @@ public class Jogo implements Serializable{
 		//}
 
 		
+	
 	public void game(String jogador1, String jogador2 ){
 
 		Scanner input = new Scanner (System.in);
@@ -55,23 +56,8 @@ public class Jogo implements Serializable{
          try {
          	do {    
         		 for (int cont = 0; cont < 9; cont++) { 
-        			 do {
-						if(cont % 2 != 0){
-	                     System.out.print( jogador2 +" Digite a posição horizontal: ");
-	                     posicao_y = input.nextInt();
-	                     System.out.print( jogador2 + " Digite a posição vertical: ");
-	                     posicao_x = input.nextInt();
-						}else{
-						 System.out.print(jogador1 +" Digite a posição horizontal: ");
-	                     posicao_y = input.nextInt();
-	                     System.out.print(jogador1 +" Digite a posição vertical: ");
-	                     posicao_x = input.nextInt();
-						}
-	                 } while (posicao_y <= 0 || posicao_y > 3 ||
-	                          posicao_x <= 0 || posicao_x > 3 ||
-	                          matriz[posicao_y - 1][posicao_x - 1] != null);
-	
-	                 matriz[posicao_y - 1][posicao_x - 1] = simbolo;
+        			 
+					questions(simbolo, jogador1, jogador2, cont, matriz, input);
 	
 	                 for (int y = 0; y < 3; y++) {
 	                     for (int x = 0; x < 3; x++) {
@@ -136,6 +122,31 @@ public class Jogo implements Serializable{
          	
         System.out.println("Obrigado por testar o programa!");	
      	input.close();
+	}
+
+	public String questions(String simbolo, String jogador1, String jogador2, int cont, String matriz[][], Scanner input){
+		int posicao_x;
+		int posicao_y;
+		
+		do {
+						if(cont % 2 != 0 ){
+						
+	                     System.out.print( jogador2 +" Digite a posição horizontal: ");
+	                     posicao_y = input.nextInt();
+	                     System.out.print( jogador2 + " Digite a posição vertical: ");
+	                     posicao_x = input.nextInt();
+						}else{
+						 System.out.print(jogador1 +" Digite a posição horizontal: ");
+	                     posicao_y = input.nextInt();
+	                     System.out.print(jogador1 +" Digite a posição vertical: ");
+	                     posicao_x = input.nextInt();
+						}
+	                 } while (posicao_y <= 0 || posicao_y > 3 ||
+	                          posicao_x <= 0 || posicao_x > 3 ||
+	                          matriz[posicao_y - 1][posicao_x - 1] != null);
+					
+							 return matriz[posicao_y - 1][posicao_x - 1] = simbolo;
+					
 	}
 	
 }

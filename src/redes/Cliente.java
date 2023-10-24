@@ -1,11 +1,14 @@
 package redes;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Scanner;
+
 import jogoDaVelha.Jogo; 
 
 public class Cliente {
@@ -18,18 +21,19 @@ public class Cliente {
         ObjectOutputStream toServer = null; 
         ObjectInputStream  fromServer = null;
         //String nome[] = new String[2];
-        Jogo c ;
-         String[] nome = new String[3];
-
+       // Jogo c ;
+       // String[] nome = new String[3];
+        int contCliente = 0;
         System.out.println("Cliente TCP iniciado, usando servidor: " + serverName + ", Porta: " + port);
  
         BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
         String userInput = "";
-
+        
          do {
+
             // Abrindo uma nova conexão de soquete para o servidor com o número de porta especificado
             socket = new Socket(serverName, port);// tentando conexão com o servidor
-
+            
             //mecanismo que faz a leitura das tags e separa as strings
             System.out.print("Digite uma tag agora, (quit) para finalizar: ");
             System.out.flush();
@@ -61,8 +65,16 @@ public class Cliente {
             }
             if(responseFromServer.equals("JOGAR")){
 
-               toServer.writeObject("JOGAR");
-               System.out.println("Inicializando jogo Multiplayer");
+        
+                    Scanner posicao = new Scanner(System.in);
+                    System.out.println("Digite uma posição orizontal");
+                    int posY = posicao.nextInt();
+                    System.out.println("Digite uma posição vertical");
+                    int posX = posicao.nextInt();
+                    DataOutputStream posicoesToServer = new DataOutputStream(socket.getOutputStream());
+                    posicoesToServer.writeInt(posY);
+                    posicoesToServer.writeInt(posX);
+
               
             }
             
