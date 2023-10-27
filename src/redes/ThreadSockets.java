@@ -6,6 +6,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -19,6 +21,9 @@ public class ThreadSockets extends Thread{
     private static int contadorThreads;
 
     //ArrayList<Socket> listaClientes = new ArrayList();
+
+    BufferedReader readert = null;
+    PrintStream outputStreamT = null;
 
     private Socket cliente1, cliente2;
 	private int contThreads; 
@@ -46,6 +51,7 @@ public class ThreadSockets extends Thread{
     BufferedReader reader = null; // Leitor local do cliente
     PrintStream outputStream = null; // Fluxo de saída para o cliente
     String nomeCliente = "";
+    String vencedor = "";
     //List <String> listaNomes = new ArrayList<String>();
 
     String clientRequest = "";
@@ -61,20 +67,30 @@ public class ThreadSockets extends Thread{
 
             //System.out.println("Cliente " + cliente.getInetAddress().getHostAddress() + " conectado!");
             if(nomes[0] != null && nomes[1] != null){
-                System.out.println("NOMes na thread " + nomes[0] + nomes[1]);
+                System.out.println("NOMes na thread " + nomes[0] + ", " + nomes[1]);
             }
+
+            // FOR 
+
+            System.out.println(cliente1);
+            System.out.println(cliente2);
+
+          
+
+            //PrintStream saida1 = new PrintStream(cliente1.getOutputStream());
+            //PrintStream saida2 = new PrintStream(cliente2.getOutputStream());
+            //outputStream = new PrintStream(socket.getOutputStream());
+
+            //ObjectOutputStream saida1 = new ObjectOutputStream(cliente1.getOutputStream());
+            //ObjectOutputStream saida2 = new ObjectInputStream(cliente2.getOutputStream());
+            //saida1.writeUTF("TESTE DE JOGO!!");
+            //saida2.println("TESTE DE JOGO da velha");
+            
             
 
-            /*
-            while(true){
-                pergunto n1, armazeno
-                pergunto n2, armazeno
-                verificação
-                renderização, enviando posições
-            }
-            */
 
 
+            
 
 
             
@@ -109,85 +125,8 @@ public class ThreadSockets extends Thread{
 
 
 
-            if(responseToClient.equals("JOGAR")){
-                //contadorThreads -= 1;
-                //System.out.println("Total de Threads active -> " + this.activeCount());
-                //contadorThreads -= 1;
-                //System.out.println("Total de Threads ativas -> " + contadorThreads);
-                outputStream.println(this.getName());
-
-                for(int cont = 0; cont < 9; cont++){
-
-
-                    String p1 = reader.readLine();
-                    String p2 = reader.readLine();
-                    System.out.println("P1 -> " + p1);
-                    System.out.println("P2 -> "+ p2);
-                    String simbolo = reader.readLine();
-                    System.out.println(simbolo); 
-
-                    int pos1 = Integer.parseInt(p1);
-                    int pos2 = Integer.parseInt(p2);
-                    matriz[pos1 - 1][pos2 - 1] = simbolo;// Até aqui ok
-                   
-                    
-                    boolean sair = false;
-                    for (int y = 0; y < 3; y++) { //VERIFICAÇÃO DE VENCEDOR(A)
-                        for (int x = 0; x < 3; x++) {   
-                            if ((matriz[y][0] == "X" && matriz[y][1] == "X" && matriz[y][2] == "X") ||
-                                (matriz[0][x] == "X" && matriz[1][x] == "X" && matriz[2][x] == "X") ||
-                                (matriz[0][0] == "X" && matriz[1][1] == "X" && matriz[2][2] == "X") ||                                  
-                                (matriz[0][2] == "X" && matriz[1][1] == "X" && matriz[2][0] == "X")
-                                ) 
-                            {
-                                    //Thread-1 Venceu
-                                    outputStream.println("Thread-1 Venceu!");
-                                    sair = true;
-                                    break;
-                            }else if(
-                                (matriz[y][0] == "O" && matriz[y][1] == "O" && matriz[y][2] == "O") ||
-                                (matriz[0][x] == "O" && matriz[1][x] == "O" && matriz[2][x] == "O") ||
-                                (matriz[0][0] == "O" && matriz[1][1] == "O" && matriz[2][2] == "O") ||
-                                (matriz[0][2] == "O" && matriz[1][1] == "O" && matriz[2][0] == "O")
-                            ){
-                                //Thread-3 Venceu
-                                outputStream.println("Thread-3 venceu");
-                                sair = true;
-                                break;
-                            }
-                            
-                            ///*if (matriz[y][x] == null) //Imprimindo Matriz
-                                //System.out.print("[_]");
-                            //else
-                                //System.out.print("[" + matriz[y][x] + "]");
-                                //*/
-                        }
-   
-                        if (sair == true)
-                            break;
-   
-                        System.out.println();
-                    } // Fim verificação
-
-                    //Enviar novamente posições já usadas, strings
-                    for(int i = 0; i <= 2; i++){ // Até aqui, aparentemente, tudo ok
-                        for(int x = 0; x <= 2; x++){
-                            ///*if(matriz[i][x].equals("X") || matriz[i][x].equals("O")){
-                                //outputStream.println(matriz[i][x]);
-                            //}else{
-                                //outputStream.println("");
-                            //}*/
-                            String s = matriz[i][x];
-                            System.out.println("ESTOU ENVIANDO ISSO -> " + s);
-                            outputStream.println(s);
-                            
-                        }
-                    }
-
-                    
-                    if (sair == true){
-                        break;
-                    }
+             
+                     
 
 
                 }
@@ -198,9 +137,9 @@ public class ThreadSockets extends Thread{
             
 
                 
-            }
+            //}
 			
-		}catch(IOException ioe) {
+	catch(Exception ioe) {
 			System.out.println("Erro: " + ioe.toString());
 		}
 	}

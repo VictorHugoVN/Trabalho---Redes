@@ -1,7 +1,10 @@
 package redes;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.InputMismatchException;
@@ -11,11 +14,13 @@ import java.util.List;
 class Cliente {
     public static void main(String args[]) throws Exception {
         String serverName = "localhost";
+        
         int port = 8722; // Same port number with the server
         Socket socket = null;
         PrintStream toServer = null;
         BufferedReader fromServer = null;
         String nomeCliente = "";
+        String meuSimbolo = "";
  
         System.out.println("Cliente TCP iniciado, usando servidor: " + serverName + ", Porta: " + port);
  
@@ -57,10 +62,25 @@ class Cliente {
                 nomeCliente = inFromUser.readLine();
                 // enviando nome
                 toServer.println(nomeCliente);
+                // pega o símbolo
+                meuSimbolo = fromServer.readLine();
+                System.out.println("MEU SÍMBOLO -> " + meuSimbolo);
             }
             if(responseFromServer.equals("JOGAR")){
 
-                String msgServer = fromServer.readLine();
+                System.out.println("TESTE 1");
+                //String s = inFromUser.readLine();
+                //BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                DataInputStream in = new DataInputStream(socket.getInputStream());
+                System.out.println("TESTE 2");
+                String s = in.readUTF(); // Não está lendo
+                System.out.println("TESTE 3");
+                System.out.println(s);
+
+
+
+               
+               /*  String msgServer = fromServer.readLine();
 
                 if(msgServer.equals("aguarde")){
                     System.out.println("Ainda não temos dois jogadores, aguarde!");
@@ -78,6 +98,7 @@ class Cliente {
                     }
                     userInput = "#quit/#";
                 }
+                */
 
                 
                 /*String nomeJogador = fromServer.readLine();
