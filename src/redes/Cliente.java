@@ -1,9 +1,8 @@
 package redes;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.net.Socket;
@@ -11,108 +10,157 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.List;
  
-class Cliente {
+public class Cliente {
     public static void main(String args[]) throws Exception {
+
         String serverName = "localhost";
-        
-        int port = 8722; // Same port number with the server
+        int port = 8724; // Same port number with the server
         Socket socket = null;
-        PrintStream toServer = null;
+        PrintStream toServer = null; 
         BufferedReader fromServer = null;
-        String nomeCliente = "";
-        String meuSimbolo = "";
- 
+        String meuNome ="";
+
         System.out.println("Cliente TCP iniciado, usando servidor: " + serverName + ", Porta: " + port);
  
-        // Read from user input
         BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
         String userInput = "";
-        do {
-            System.out.print("Digite qualquer string agora: ( #quit/# para finalizar ) ");
+
+         do {
+            // Abrindo uma nova conexão de soquete para o servidor com o número de porta especificado
+            socket = new Socket(serverName, port);// tentando conexão com o servidor
+
+            //mecanismo que faz a leitura das tags e separa as strings
+            System.out.print("Digite uma tag agora, (#quit/#) para finalizar: ");
             System.out.flush();
             userInput = inFromUser.readLine().replace(" ", "");// aqui pega a string !!!!
             userInput = userInput.substring(userInput.indexOf("#")+1, userInput.indexOf("/#"));
-            //System.out.println("USER INPUT -> " + userInput);
+
             if (userInput.equalsIgnoreCase("quit")) {
                 break;
             }
  
-            // Abra uma nova conexão de soquete para o servidor com o número de porta especificado
-            socket = new Socket(serverName, port);
-
-        
- 
+            
             // Enviando entrada do usuário para o servidor
             toServer = new PrintStream(socket.getOutputStream()); 
-            toServer.println(userInput); // AQUI
-            
-            
-            // Temos que enviar de volta ao servidor !!!!
+            toServer.println(userInput);
             System.out.println("[TCPClient] Enviar entrada do usuário [" + userInput + "] ao Servidor.");
  
-            // Recebendo resposta do servidor
+            // Recebendo resposta do servidor, recebende de volta as tags.
             fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            String responseFromServer = fromServer.readLine(); // AQUI
-            //toServer.println(responseFrom)
+            String responseFromServer = fromServer.readLine();
             System.out.println("[TCPClient] Obtenha resposta [" + responseFromServer + "] do servidor.");
+
+            try{
             if(responseFromServer.equals("LOGIN")){
                 // pegando nome
                 System.out.println("Digite o seu nome: ");
                 System.out.flush();
-                nomeCliente = inFromUser.readLine();
-                // enviando nome
-                toServer.println(nomeCliente);
-                // pega o símbolo
-                meuSimbolo = fromServer.readLine();
-                System.out.println("MEU SÍMBOLO -> " + meuSimbolo);
+                meuNome = inFromUser.readLine();
+                toServer.println(meuNome); //envia para o servidor o nome do cliente
+                /// o que posso fazer aqui é o servidor pegar o nome dos clientes e retornar para os 2 clientes a lista de nomes para que a thread possa
             }
             if(responseFromServer.equals("JOGAR")){
 
-                System.out.println("TESTE 1");
-                //String s = inFromUser.readLine();
-                //BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                DataInputStream in = new DataInputStream(socket.getInputStream());
-                System.out.println("TESTE 2");
-                String s = in.readUTF(); // Não está lendo
-                System.out.println("TESTE 3");
-                System.out.println(s);
+                System.out.println("Inicializando jogo" + meuNome);
+                int contador = 0;
 
 
+            
+                
+                //Laço
+                String matrizString[][] = new String[3][3];
+                String sair = "";
 
-               
-               /*  String msgServer = fromServer.readLine();
+                Cliente c = new Cliente();
+                //c.renderizar(matrizString);
 
-                if(msgServer.equals("aguarde")){
-                    System.out.println("Ainda não temos dois jogadores, aguarde!");
-                }else if(msgServer.equals("ok")){
-                    String n1 = fromServer.readLine();
-                    String n2 = fromServer.readLine();
-                    if(n1 != null && n2 != null){
-                        Cliente c = new Cliente();
-                        if(nomeCliente.equals(n1)){ // Posso fazer esperar aqui?????
-                            c.jogoDaVelha(n1, n2, toServer, fromServer, "X");
-                        }else if(nomeCliente.equals(n2)){
-                            c.jogoDaVelha(n1, n2, toServer, fromServer, "O");
+                while(true){
+
+                    /*for(int l = 0; l < 3; l++){ // Lendo matriz do servidor
+                        for(int col = 0; col < 3; col++){
+                            matrizString[l][col] = fromServer.readLine();
                         }
-                        
+                    }*/
+
+                    
+
+                    int posicao_y = 0;
+                    int posicao_x = 0;
+                    Scanner input = new Scanner (System.in);
+
+                    if(contador % 2 == 0){ // Vez do jogador
+                        System.out.print("Digite a posição horizontal: ");
+                        posicao_y = input.nextInt();
+                        System.out.print("Digite a posição vertical: ");
+                        posicao_x = input.nextInt();
                     }
-                    userInput = "#quit/#";
+
+                    // Convertendo para String
+                    String y = "";
+                    String x = "";
+                    String valorAtual = "";
+                    y += posicao_y; // linha
+                    x += posicao_x; // coluna
+                    valorAtual += contador; // serve para indicar de quem é a vez
+
+                    // Enviando ao servidor
+                    toServer.println(y);
+                    toServer.println(x);
+                    toServer.println(valorAtual);
+
+
+                    // Receber o contador novamente
+                    String atualCont = "";
+                    atualCont = fromServer.readLine();
+                    contador = Integer.parseInt(atualCont);
+
+                    // Recebendo símbolo do vencedor, caso tenha
+                    String simb = fromServer.readLine();
+                    if(simb.equals("X")){
+                        System.out.println(meuNome + " Venceu!!");
+                    }else if(simb.equals("O")){
+                        System.out.println("Computador Venceu!!");
+                    }
+
+                    // Recebendo a matriz preenchida do servidor
+                    for(int l = 0; l < 3; l++){
+                        for(int co = 0; co < 3; co++){
+                            matrizString[l][co] = fromServer.readLine();
+                        }
+                    }
+
+                    c.renderizar(matrizString);
+                    if(contador == 9){
+                        if(simb.equals("")){
+                            System.out.println("Deu velha!!");
+                        }
+                        break;
+                    }
+                    System.out.println();
+                    System.out.println("Abaixo, a jogada do computador!");
+                    contador++;
+
+
+
+
+                    
                 }
-                */
 
                 
-                /*String nomeJogador = fromServer.readLine();
-                String simb = null;
-                if(nomeJogador.equals("Thread-1")){
-                    simb = "X";
-                }else if(nomeJogador.equals("Thread-3")){
-                    simb = "O";
-                }
-                Cliente c = new Cliente();
-                c.jogoDaVelha(nomeJogador, toServer, simb, fromServer);
-                userInput = "quit";*/
-            }
 
+
+
+                /*Cliente jogo = new Cliente();
+                jogo.game(meuNome, socket);*/
+                
+                //userInput = "quit";
+            }
+            
+        }catch(IOException e){
+           
+            System.out.println(" ### PROBLEMAS NO BLOCO DE TAGS NO CLIENTE, POR FAVOR REVEJA!!!! ### ");
+            e.printStackTrace();    
+        }
         } while (!userInput.equals("quit")); // Encerre o cliente se 'quit' for uma entrada
  
         // Close connection
@@ -121,139 +169,23 @@ class Cliente {
         }
     }
 
-    // simb = x ou o
-    public void jogoDaVelha(String nome1, String nome2, PrintStream toServer, BufferedReader fromServer, String simb){
-        Scanner input = new Scanner (System.in);
-		String[][] matriz = new String[3][3];
-        String opc;
-        String pos_y;
-        String pos_x;
-        int posicao_x;
-        int posicao_y;
-        PrintStream toServerr = toServer;
-        BufferedReader fromServerr = fromServer;
 
-
-
-        String jogador1 = nome1;
-        String jogador2 = "Segundo Jogador";
-        String simbolo = simb;
-        boolean sair = false;
-
-         //System.out.print("Jogador X: ");
-         //jogador1 = input.next();
-         //System.out.print("Jogador O: ");
-         //jogador2 = input.next();
-
-         try {
-         	do {    
-        		 for (int cont = 0; cont < 9; cont++) { 
-        			 do {
-                            
-	                        System.out.print("Digite a posição horizontal: ");
-	                        pos_y = input.nextLine();
-                            toServerr.println(pos_y); // Enviando posição da linha
-	                        
-                            System.out.print("Digite a posição vertical: ");
-	                        pos_x = input.nextLine();                            
-                            toServerr.println(pos_x); // Enviando posição da coluna
-                            toServerr.println(simb);
-
-                            posicao_x = Integer.parseInt(pos_x);
-                            posicao_y = Integer.parseInt(pos_y);
-
-	                 } while (posicao_y <= 0 || posicao_y > 3 ||
-	                          posicao_x <= 0 || posicao_x > 3 ||
-	                          matriz[posicao_y - 1][posicao_x - 1] != null);
-	
-                    //Não precisaremos
-	                 matriz[posicao_y - 1][posicao_x - 1] = simbolo;
-	
-                     /*
-	                 for (int y = 0; y < 3; y++) { //VERIFICAÇÃO DE VENCEDOR(A), levar para o sevidor!
-	                     for (int x = 0; x < 3; x++) {//Verifica se alguém venceu
-	                    	 if ((matriz[y][0] == "X" && matriz[y][1] == "X" && matriz[y][2] == "X") ||
-		                             (matriz[y][0] == "O" && matriz[y][1] == "O" && matriz[y][2] == "O") ||
-		                             (matriz[0][x] == "X" && matriz[1][x] == "X" && matriz[2][x] == "X") ||
-		                             (matriz[0][x] == "O" && matriz[1][x] == "O" && matriz[2][x] == "O") ||
-		                             (matriz[0][0] == "X" && matriz[1][1] == "X" && matriz[2][2] == "X") ||
-		                             (matriz[0][0] == "O" && matriz[1][1] == "O" && matriz[2][2] == "O") ||
-		                             (matriz[0][2] == "X" && matriz[1][1] == "X" && matriz[2][0] == "X") ||
-		                             (matriz[0][2] == "O" && matriz[1][1] == "O" && matriz[2][0] == "O")) {
-		                             sair = true;
-		                             break;
-		                     }
-	                    	 
-	                         if (matriz[y][x] == null) //Imprimindo Matriz
-	                             System.out.print("[_]");
-	                         else
-	                             System.out.print("[" + matriz[y][x] + "]");
-	                     }
-	
-	                     if (sair == true)
-	                         break;
-	
-	                     System.out.println();
-	                 } // Fim verificação*/
-
-
-                     //Receber posições já usadas
-                     for (int y = 0; y < 3; y++) { 
-	                     for (int x = 0; x < 3; x++) {
-
-                            String s = fromServerr.readLine();
-                            matriz[y][x] = s;
-
-                            if (matriz[y][x].equals(null)) //Imprimindo Matriz
-                                System.out.print("[_]");
-                            else
-                                System.out.print("[" + matriz[y][x] + "]");
-                         }
-                         System.out.println();
-                    }
-	
-	                 if (sair == true) 
-	                     break;
-	
-	                 if (simbolo == "X") {
-	                     simbolo = "O";
-	                 } else {
-	                     simbolo = "X";
-	                 }
-	             }
-	
-	             if (sair == true) {
-	                 if(simbolo == "X")
-	                     System.out.println(jogador1 + " ganhou!!");
-	                 else
-	                     System.out.println(jogador2 + " ganhou!!");
-	             }
-	
-	             System.out.print("Deseja começar novamente [S] ou [N]? ");
-	             opc = input.next().toUpperCase();
-                 if(opc.equals("S")){
-                    // QUIT
-                 }
-	
-	             sair = false;
-	             simbolo = "X";
-	             for (int y = 0; y < 3; y++) {
-	                 for (int x = 0; x < 3; x++)
-	                     matriz[y][x] = null;
-	             }
-         	} while (opc.toUpperCase().equals("S"));
-        } catch (InputMismatchException e) {
-   			System.out.println("Você digitou o valor errado!");
-   			//main(null);
-   		} catch (Exception e) {
-   			System.out.println("ERRO!");
-   			e.printStackTrace();
-   		} 
-         	
-        System.out.println("Obrigado por testar o programa!");	
-     	input.close();
-	
+    public void renderizar(String matriz[][]){
+        for(int l = 0; l < 3; l++){
+            for(int c = 0; c < 3; c++){
+                System.out.print("[" + matriz[l][c] + "] ");
+            }
+            System.out.println();
+        }
     }
 
 
+
+
+
+
+
+
+
 }
+   
