@@ -1,40 +1,44 @@
 package redes;
 
+import java.io.DataOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.List;
  
 public class Servidor {
     //private static int contadorThreads = -1;
-        
+    //private static List<Socket> listaCliente = new ArrayList<>();
 
     public static void main(String args[]  ) throws Exception {
         
         int port = 8724;
         Socket socketC1 = null;
-        Socket socketC2 = null;
-
+        //Socket socketC2 = null;
+       
         ServerSocket ss = new ServerSocket(port); // abre o socket
         System.out.println("TCP Server is starting up, listening at port " + port + ".");
-
-        while(true){
-          
-        socketC1 = ss.accept();// aceita conexão Cliente 1;
-        socketC2 = ss.accept();// aceita conexão do cliente 2;
-       
-
-       
-        Thread clienteThread = new Thread(new ThreadSockets(socketC2, 2));
-         clienteThread.start();
-        Thread ClienteThread2 = new Thread(new ThreadSockets(socketC1, 1));
-        ClienteThread2.start();
+        int IDCliente = -1;
         
-        System.out.println("O Servidor acessou a thread (passou as credenciais do socket parta a thread). ");
-        
+       while(true){
+                
+               //socketC2 = ss.accept();// aceita conexão do cliente 2;
+                //Thread clienteThread2 = new Thread(new ThreadSockets(socketC2, 2));
+                // clienteThread2.start();
+                IDCliente++;
+                socketC1 = ss.accept();
+               // System.out.println("O Servidor acessou a thread (passou as credenciais do socket parta a thread). ");
+                Thread clienteThread1 = new Thread(new ThreadSockets(socketC1, IDCliente));
+                clienteThread1.start();
+               //System.out.println("O Servidor acessou a thread (passou as credenciais do socket parta a thread). ");
+               
 
+                // ListClient.add((ThreadSockets) clienteThread2);
+                //ListClient.add((ThreadSockets) clienteThread1);
        
                 
-
+        
 
             /*/////// TRATA AS INFORMAÇÕES DO SEGUNDO CLIENTE  QUE SE CONECTA //////////
             

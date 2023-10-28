@@ -1,9 +1,10 @@
 package redes;
+import jogoDaVelha.Jogo;
 
 public class main {
     public static void main(String args[]){
 
-        //JogoDaVelha novojogo = new JogoDaVelha();
-        //novojogo.game("phedro", "maquina");
+        //Jogo novojogo = new Jogo();
+       // novojogo.game("phedro", "maquina");
     }
 }
