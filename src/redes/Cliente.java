@@ -43,12 +43,12 @@ public class Cliente {
             // Enviando entrada do usuário para o servidor
             toServer = new PrintStream(socket.getOutputStream()); 
             toServer.println(userInput);
-            System.out.println("[TCPClient] Enviar entrada do usuário [" + userInput + "] ao Servidor.");
+            //System.out.println("[TCPClient] Enviar entrada do usuário [" + userInput + "] ao Servidor.");
  
             // Recebendo resposta do servidor, recebende de volta as tags.
             fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String responseFromServer = fromServer.readLine();
-            System.out.println("[TCPClient] Obtenha resposta [" + responseFromServer + "] do servidor.");
+            //System.out.println("[TCPClient] Obtenha resposta [" + responseFromServer + "] do servidor.");
 
             try{
             if(responseFromServer.equals("LOGIN")){
@@ -89,9 +89,9 @@ public class Cliente {
                     Scanner input = new Scanner (System.in);
 
                     if(contador % 2 == 0){ // Vez do jogador
-                        System.out.print("Digite a posição horizontal: ");
+                        System.out.print("#posição_horizontal# "); // TAG
                         posicao_y = input.nextInt();
-                        System.out.print("Digite a posição vertical: ");
+                        System.out.print("#posição_vertical# "); // TAG
                         posicao_x = input.nextInt();
                     }
 
@@ -117,9 +117,9 @@ public class Cliente {
                     // Recebendo símbolo do vencedor, caso tenha
                     String simb = fromServer.readLine();
                     if(simb.equals("X")){
-                        System.out.println(meuNome + " Venceu!!");
+                        System.out.println("#" + meuNome + "_Venceu!!/#"); // TAG
                     }else if(simb.equals("O")){
-                        System.out.println("Computador Venceu!!");
+                        System.out.println("#Computador_Venceu!!/#"); //TAG
                     }
 
                     // Recebendo a matriz preenchida do servidor
@@ -147,13 +147,31 @@ public class Cliente {
                 }
 
                 
+            }
+            if(responseFromServer.equals(("HISTORIA"))){
+                System.out.println();
+                System.out.println("Tem registros dele desde o século 14, lá no Egito. Só que foi mais pra frente, " +
+                "já no século 19, na Inglaterra, que o jogo ficou popular mesmo." +
+                "Era a brincadeira favorita da hora do chá das mulheres idosas, " + 
+                "que adoravam praticar esse passatempo pra relaxar, " + 
+                "e é daí que vem o nome: jogo da velha! " +
+                "Quando as mulheres inglesas se reuniam na hora do chá para bordar tinha aquelas mais " +
+                "velhas que não conseguiam mais fazer este ofício." +
+                "Muito dessas senhoras já apresentavam problemas de vista e não enxergavam o suficiente para conseguir bordar. " +
+                "A solução para conseguirem um novo passatempo foi jogar o jogo de velha.");
+                System.out.println();
 
-
-
-                /*Cliente jogo = new Cliente();
-                jogo.game(meuNome, socket);*/
-                
-                //userInput = "quit";
+            }
+            if(responseFromServer.equals("REGRAS")){
+                System.out.println();
+                System.out.println("Dois jogadores escolhem dois símbolo com que querem jogar. Normalmente"+
+                "é usado as letras X e O. O material do jogo é um tabuleiro, que pode ser desenhado, "+
+                "com três linhas e três colunas. Os espaços em branco dessas linhas e colunas serão " +
+                "preenchidos com os símbolos escolhidos." +
+                "O objetivo do jogo é preencher ou as linhas diagonais ou as horizontais ou "+
+                "as verticais com um mesmo símbolo (X ou O) e impedir que seu adversário faço isso "+
+                "primeiro que você.");
+                System.out.println();
             }
             
         }catch(IOException e){
