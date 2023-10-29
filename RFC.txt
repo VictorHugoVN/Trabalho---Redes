@@ -1,6 +1,6 @@
-Network Working Group                                    J. Doe
-Request for Comments: XXXX                              XYZ Corporation
-Category: Informational                                October 29, 20XX
+Network Working Group                                   Phedro Henrick, Victor Hugo
+                         
+Category: Informational                                October 30, 2023
 
                     Protocolo de Jogo da Velha - 1.0 
 
@@ -85,7 +85,7 @@ Como diz o verbo, será iniciado a partida do jogo;
         2.10 #derrota_maquina/#  :  Emitida pelo Servidor para representar a derrota da máquina.
 
         2.11 #derrota_Jogador/#  :  Emitida pelo servidor para sinalizar a derrota do jogador.
-        
+
 3 #historia/# : Emitida pelo cliente. Conta um pouco da história do jogo (é preciso ser sem acento).
 
 4 #regras/# : Emitida pelo cliente. Mostra as regras do jogo
