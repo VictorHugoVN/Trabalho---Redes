@@ -79,12 +79,6 @@ public class ThreadSockets extends Thread{
 	public void run() {
 		try {
 
-			/*if(contadorCliente != 1){
-					System.out.println("cliente 2 conectado");
-					contadorCliente++;
-				}else{
-					System.out.println("cliente 1 conectado");
-				}*/
 
 			while (true){
 			
@@ -166,29 +160,30 @@ public class ThreadSockets extends Thread{
 								
 							outputStream = new DataOutputStream(jogadores[0].getOutputStream());
 							System.out.println("teste de chegada");
-							
-							outputStream.writeUTF("[#EntradaPos1/#] digite a posição orizontal");
+							//outputStream.writeUTF("[#EntradaPos1/#] digite a posição orizontal");
 							posicao_y = (int) readerC1.readInt();
 							System.out.println(posicao_y);
-							outputStream.writeUTF("[#EntradaPos2/#] digite a posição vertical");
+							//outputStream.writeUTF("[#EntradaPos2/#] digite a posição vertical");
 							posicao_x = (int) readerC1.readInt();
 							System.out.println(posicao_x);
 							simbolo = "X";
 							outputStream.writeUTF("JOGAR");
 							
-							 }else{
+							  }else{
+
 							outputStream = new DataOutputStream(jogadores[1].getOutputStream());
 							System.out.println("teste de chegada");
 							outputStream.writeUTF("JOGAR");
-							outputStream.writeUTF("[#EntradaPos1/#] digite a posição orizontal");
+							//outputStream.writeUTF("[#EntradaPos1/#] digite a posição orizontal");
 							posicao_y = (int) readerC1.readInt();
 							System.out.println(posicao_y);
-							outputStream.writeUTF(" [#EntradaPos2/#] digite a posição vertical");
+							//outputStream.writeUTF("[#EntradaPos2/#] digite a posição vertical");
 							posicao_x = (int) readerC1.readInt();
 							System.out.println(posicao_x);
 							simbolo = "O";
-							
+							//outputStream.writeUTF("JOGAR");
 							}
+							
 						}while(posicao_y <= 0 || posicao_y > 3 ||
 						posicao_x <= 0 || posicao_x > 3 ||
 						matriz[posicao_y - 1][posicao_x - 1] != null);

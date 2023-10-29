@@ -67,16 +67,18 @@ public class Cliente {
             }
             else if(responseFromServer.equals("JOGAR")){
                     String mensagem;
-                    
-                
-                
-                    mensagem = fromServer.readUTF();
-                    System.out.println(mensagem);
                     Scanner posicao = new Scanner(System.in);
+                    String matriz[][] = new String[3][3];
+                    boolean sair = false;
+                    
+                    //mensagem = fromServer.readUTF();
+                    //System.out.println(mensagem);
+                    System.out.println("[#EntradaPos1/#] digite a posição orizontal ");
                    int posY = posicao.nextInt();
                     toServer.writeInt(posY);
                     //System.out.println("[#EntradaPos1/#] Digite uma posição vertical");
-                   mensagem = fromServer.readUTF();
+                  // mensagem = fromServer.readUTF();
+                    System.out.println("[#EntradaPos2/#] digite a posição Vertical ");
                     int posX = posicao.nextInt();
                     toServer.writeInt(posX);
                     fromServer.readUTF();
