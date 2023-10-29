@@ -83,7 +83,7 @@ public class ThreadSockets extends Thread{
 					
 						// Lê o nome do cliente e aguarda o outro fazer o loguin para mandar iniciar o jogo.
 						nomeCliente = reader.readLine();
-						System.out.println("Nome do jogador  -> "  + nomeCliente);  // *** um problema aqui é que eu n da pra passar essa lista para a thread executar o jogo antes do outro cliente se conectar
+						System.out.println("#SetSimbolo/# Jogador X -> "  + nomeCliente);  // *** um problema aqui é que eu n da pra passar essa lista para a thread executar o jogo antes do outro cliente se conectar
 						//nomes[this.contThreads] = nomeCliente;// colocando no arrey de nomes para que eu possa passar para a thread
 					
 	
