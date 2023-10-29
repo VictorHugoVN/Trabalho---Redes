@@ -86,12 +86,12 @@ public class ThreadSockets extends Thread{
        		String nomeCliente1 = "";
        		DataOutputStream outputStream = null;// Fluxo de saída para o cliente
 				
-			if(contadorCliente % 2 == 0){
+			//if(contadorCliente % 2 == 0){
 				
-					contadorCliente = 0;
-			}else{
-					contadorCliente = 1;
-			}
+					//contadorCliente = 0;
+			//}else{
+					//contadorCliente = 1;
+			//}
 
                     jogadores[contadorCliente] = getCliente();
 					/////// TRATA AS INFORMAÇÕES DO  CLIENTE  QUE SE CONECTA //////////
@@ -129,50 +129,40 @@ public class ThreadSockets extends Thread{
 						
 						nomes[contadorCliente] = nomeCliente1;// colocando no arrey de nomes para que eu possa passar para a thread
 						
-					}else if(responseToClientC1.equals("JOGAR")){
+					}/*else if(responseToClientC1.equals("JOGAR")){
 
-						
-						
-					
 							
-							String posicao[][] = new String[3][3];
 							Jogo j = new Jogo();
 							Scanner input = new Scanner (System.in);
 							String[][] matriz = new String[3][3];
 							String opc = "S";
 							String simbolo = "X";
-							boolean sair = false;
-							
-							
-         try {
-			
-         	do {    
-
-					
-        		
-					         
+							boolean sair = false;	         
 							int posicao_y = 0;
 							int posicao_x = 0;
 							
-				for(int N = 0; N<2 ; N++){
-							do{
-							if(N % 2 == 0){
-								
-							outputStream = new DataOutputStream(jogadores[0].getOutputStream());
-							System.out.println("teste de chegada");
-							//outputStream.writeUTF("[#EntradaPos1/#] digite a posição orizontal");
-							posicao_y = (int) readerC1.readInt();
-							System.out.println(posicao_y);
-							//outputStream.writeUTF("[#EntradaPos2/#] digite a posição vertical");
-							posicao_x = (int) readerC1.readInt();
-							System.out.println(posicao_x);
-							simbolo = "X";
-							outputStream.writeUTF("JOGAR");
+				//for(int N = 0; N<2 ; N++){
 							
-							  }else{
+					do{
+							if(contadorCliente == 0){
 
+							outputStream.writeUTF("JOGAR");
+							outputStream = new DataOutputStream(jogadores[0].getOutputStream());
+							System.out.println("teste de chegada C1");
+							//outputStream.writeUTF("[#EntradaPos1/#] digite a posição orizontal");
+							posicao_y = (int) readerC1.readInt();
+							System.out.println(posicao_y);
+							//outputStream.writeUTF("[#EntradaPos2/#] digite a posição vertical");
+							posicao_x = (int) readerC1.readInt();
+							System.out.println(posicao_x);
+							matriz[posicao_y - 1][posicao_x - 1] = "X";
+							sair = j.validacao(matriz, sair, simbolo);
+							
+							  }else if(contadorCliente == 1){
+
+								
 							outputStream = new DataOutputStream(jogadores[1].getOutputStream());
-							System.out.println("teste de chegada");
+							System.out.println("teste de chegada C2");
 							outputStream.writeUTF("JOGAR");
 							//outputStream.writeUTF("[#EntradaPos1/#] digite a posição orizontal");
 							posicao_y = (int) readerC1.readInt();
@@ -180,38 +170,23 @@ public class ThreadSockets extends Thread{
 							//outputStream.writeUTF("[#EntradaPos2/#] digite a posição vertical");
 							posicao_x = (int) readerC1.readInt();
 							System.out.println(posicao_x);
-							simbolo = "O";
-							//outputStream.writeUTF("JOGAR");
+							//simbolo = "O";
+							matriz[posicao_y - 1][posicao_x - 1] = "O";
+							sair = j.validacao(matriz, sair, simbolo);
 							}
 							
-						}while(posicao_y <= 0 || posicao_y > 3 ||
-						posicao_x <= 0 || posicao_x > 3 ||
-						matriz[posicao_y - 1][posicao_x - 1] != null);
+						}while(contadorCliente == 1);
 							
-					matriz[posicao_y - 1][posicao_x - 1] = simbolo;
-					sair = j.validacao(matriz, sair, simbolo);
-	           
-					}
-
-	             opc = j.winner(sair, simbolo, input, matriz);
-				 
-         	} while (opc.toUpperCase().equals("S"));
-		
-        } catch (InputMismatchException e) {
-   			System.out.println("Você digitou o valor errado!");
-   			//game(null);
-   		} catch (Exception e) {
-   			System.out.println("ERRO!");
-   			e.printStackTrace();
-   		} 
-         	
-        System.out.println("Obrigado por testar o programa!");	
-     	input.close();
-	
-	
+					//matriz[posicao_y - 1][posicao_x - 1] = simbolo;
+					
 						
-	}
-						}catch (IOException e){
+	        
+			
+						
+	}	*/		
+
+		 
+			}catch (IOException e){
 							
 							System.out.println(" ### PROBLEMAS NO BLOCO DE TAGS NO SERVIDOR, POR FAVOR REVEJA!!!! ### ");
 							e.printStackTrace();
