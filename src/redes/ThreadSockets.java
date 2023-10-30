@@ -1,5 +1,6 @@
 package redes;
 
+
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -83,7 +84,13 @@ public class ThreadSockets extends Thread{
 					
 						// Lê o nome do cliente e aguarda o outro fazer o loguin para mandar iniciar o jogo.
 						nomeCliente = reader.readLine();
-						System.out.println("Nome do jogador  -> "  + nomeCliente);  // *** um problema aqui é que eu n da pra passar essa lista para a thread executar o jogo antes do outro cliente se conectar
+						
+						//Indica que recebeu o nome do cliente
+						outputStream.println("#getnome/#:");
+
+						//Indica o símbolo para o cliente
+						outputStream.println("#SetSimbolo/# Jogador X");
+						System.out.println();  // *** um problema aqui é que eu n da pra passar essa lista para a thread executar o jogo antes do outro cliente se conectar
 						//nomes[this.contThreads] = nomeCliente;// colocando no arrey de nomes para que eu possa passar para a thread
 					
 	

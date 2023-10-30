@@ -1,5 +1,7 @@
 package redes;
 
+
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -53,15 +55,20 @@ public class Cliente {
             try{
             if(responseFromServer.equals("LOGIN")){
                 // pegando nome
-                System.out.println("Digite o seu nome: ");
+                System.out.println(" #askNome/#   Digite o seu nome: ");
                 System.out.flush();
+                
                 meuNome = inFromUser.readLine();
                 toServer.println(meuNome); //envia para o servidor o nome do cliente
                 /// o que posso fazer aqui é o servidor pegar o nome dos clientes e retornar para os 2 clientes a lista de nomes para que a thread possa
+                String statusNome = fromServer.readLine();
+                System.out.println(statusNome);
+                String simb = fromServer.readLine();
+                System.out.println(simb);
             }
             if(responseFromServer.equals("JOGAR")){
 
-                System.out.println("Inicializando jogo" + meuNome);
+                System.out.println(" #inicio/# :  Inicializando jogo " + meuNome);
                 int contador = 0;
 
 
@@ -89,9 +96,9 @@ public class Cliente {
                     Scanner input = new Scanner (System.in);
 
                     if(contador % 2 == 0){ // Vez do jogador
-                        System.out.print("#posição_horizontal# "); // TAG
+                        System.out.print("#askPosicao_horizontal/# : Entre com a posição horizontal "); // TAG
                         posicao_y = input.nextInt();
-                        System.out.print("#posição_vertical# "); // TAG
+                        System.out.print("#askPosição_vertical# : Entre com a posição Vertical "); // TAG
                         posicao_x = input.nextInt();
                     }
 
@@ -114,12 +121,17 @@ public class Cliente {
                     atualCont = fromServer.readLine();
                     contador = Integer.parseInt(atualCont);
 
+
                     // Recebendo símbolo do vencedor, caso tenha
                     String simb = fromServer.readLine();
                     if(simb.equals("X")){
-                        System.out.println("#" + meuNome + "_Venceu!!/#"); // TAG
+                        System.out.println("#" + meuNome + "_Venceu/#:  Vitória do jogador !! "); // TAG
+                        System.out.println();
+                        System.out.println("#derrota_maquina/# : Maquina foi derrotada ");
                     }else if(simb.equals("O")){
-                        System.out.println("#Computador_Venceu!!/#"); //TAG
+                        System.out.println("#Computador_Venceu/#:   Vitória da Maquina!! "); //TAG
+                        System.out.println();
+                        System.out.println("#derrota_jogador/#:  derrota do jogador ");
                     }
 
                     // Recebendo a matriz preenchida do servidor
@@ -129,15 +141,19 @@ public class Cliente {
                         }
                     }
 
+                    if(contador % 2 != 0){
+                        System.out.println(" #posicoesMaquina/# : Abaixo, a jogada do computador!");
+                    }
+                    
                     c.renderizar(matrizString);
                     if(contador == 9){
                         if(simb.equals("")){
-                            System.out.println("Deu velha!!");
+                            System.out.println(" #empate/#   Deu velha!!");
                         }
                         break;
                     }
                     System.out.println();
-                    System.out.println("Abaixo, a jogada do computador!");
+                    
                     contador++;
 
 
@@ -172,6 +188,9 @@ public class Cliente {
                 "as verticais com um mesmo símbolo (X ou O) e impedir que seu adversário faço isso "+
                 "primeiro que você.");
                 System.out.println();
+            }
+            if(responseFromServer.equals("VERSAO")){
+                System.out.println("1.0");
             }
             
         }catch(IOException e){
