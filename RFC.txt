@@ -7,7 +7,7 @@ Category: Informational                                October 30, 2023
 1. Introdução
 
    Este documento descreve um protocolo de comunicação para suportar
-   jogos da velha (Tic-Tac-Toe) em uma plataforma de jogos online. O jogo da
+   jogos da velha (Tic-Tac-Toe) em uma plataforma de jogos. O jogo da
    velha é um jogo popular que envolve dois jogadores que competem para
    preencher um tabuleiro 3x3 com seus símbolos (X e O) e tentam
    alcançar uma linha horizontal, vertical ou diagonal completa com seus
@@ -92,6 +92,7 @@ Como diz o verbo, será iniciado a partida do jogo;
 
 5 #quit/# : Emitida pelo cliente. Usada fora do laço do jogo
 
+6 #versão/# :  1.0 
 
 
 
