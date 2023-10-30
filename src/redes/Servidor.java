@@ -25,7 +25,10 @@ class Servidor {
             contadorThreads++;
             Thread clienteThread = new ThreadSockets(socket, contadorThreads);
             clienteThread.start();
- 
+            
+            
+           
         }
+
     }
 }

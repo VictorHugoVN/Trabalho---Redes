@@ -57,7 +57,11 @@ public class ThreadSockets extends Thread{
 				clientRequest = reader.readLine();// Mensagem do cliente
 				String novaMensagem = clientRequest;
 				System.out.println("[TCPServer] Get request [" + novaMensagem + "] from Client.");
-	
+				if(novaMensagem == null){
+					System.out.println();
+					System.out.println("Cliente descoectou da partida ");	
+				}
+				
 	
 				// Enviando resposta ao cliente
 				outputStream = new PrintStream(cliente.getOutputStream());
@@ -68,6 +72,11 @@ public class ThreadSockets extends Thread{
 					
 					System.out.println("[TCPServer] Send out response [" + responseToClient + "] to Client.");
 					outputStream.println(responseToClient); //
+					 if (responseToClient.equalsIgnoreCase("QUIT")) {
+               				 
+								cliente.close();           					
+							 }
+
 
 					for(int l = 0; l < 3; l++){
 							for(int c = 0; c < 3; c++){
@@ -185,42 +194,42 @@ public class ThreadSockets extends Thread{
 
 							if(cont == 9){
 								break;
+								
 							}
+
 						}
+
 
 						
 
 						
 	
 					}
-						
-				
-				
-				
-				
 				
 				}catch (IOException e){
 							
-							System.out.println(" ### PROBLEMAS NO BLOCO DE TAGS NO SERVIDOR, POR FAVOR REVEJA!!!! ### ");
+							System.out.println(" ### Clientes desconectados da thread !!!! ### ");
 							e.printStackTrace();
 						}
 
+									
 						
-			
 						// Close connection
-						if (cliente != null) {
-							cliente.close();
-						}
+						//if (cliente != null) {
+						//	cliente.close();
+						//}
 						
 						// 4 - Fechar socket de comunicação
-						cliente.close();
+						//cliente.close();
 
 
 				}
+
 			}catch(IOException ioe) {
 				Thread id = new Thread(); 
 				System.out.println("Erro: Threads cuja o ID é: " + id.getId() + " " + ioe.toString());
 			}
+			
 		}
 		
 	}

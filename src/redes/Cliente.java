@@ -35,9 +35,9 @@ public class Cliente {
             userInput = inFromUser.readLine().replace(" ", "");// aqui pega a string !!!!
             userInput = userInput.substring(userInput.indexOf("#")+1, userInput.indexOf("/#"));
 
-            if (userInput.equalsIgnoreCase("quit")) {
-                break;
-            }
+           // if (userInput.equalsIgnoreCase("quit")) {
+             //   break;
+            //}
  
             
             // Enviando entrada do usuário para o servidor
@@ -48,6 +48,9 @@ public class Cliente {
             // Recebendo resposta do servidor, recebende de volta as tags.
             fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String responseFromServer = fromServer.readLine();
+            if (responseFromServer.equalsIgnoreCase("QUIT")) {
+                break;
+            }
             //System.out.println("[TCPClient] Obtenha resposta [" + responseFromServer + "] do servidor.");
 
             try{
@@ -62,7 +65,7 @@ public class Cliente {
             }
             if(responseFromServer.equals("JOGAR")){
 
-                System.out.println(" #inicio/# :  Inicializando jogo" + meuNome);
+                System.out.println(" #inicio/# :  Inicializando jogo " + meuNome);
                 int contador = 0;
 
 
@@ -90,10 +93,31 @@ public class Cliente {
                     Scanner input = new Scanner (System.in);
 
                     if(contador % 2 == 0){ // Vez do jogador
-                        System.out.print("#askPosicao_horizontal/# : Entre com a posição horizontal "); // TAG
-                        posicao_y = input.nextInt();
-                        System.out.print("#askPosição_vertical# : Entre com s posição Vertical "); // TAG
+                        
+                            System.out.print("#askPosicao_horizontal/# : Entre com a posição horizontal "); // TAG
+                            posicao_y = input.nextInt();
+
+                        if(posicao_y > 3 || posicao_y < 1 ){
+                            System.out.println();
+                            System.out.println("por favor, entre com uma posição válida, num range de 1 a 3");
+                            System.out.println();
+                            System.out.print("#askPosicao_horizontal/# : Entre com a posição horizontal "); // TAG
+                            
+                            posicao_y = input.nextInt();
+                        }
+
+                        System.out.print("#askPosição_vertical# : Entre com a posição Vertical "); // TAG
                         posicao_x = input.nextInt();
+
+                        if(posicao_x > 3 || posicao_x < 1){
+                            System.out.println();
+                            System.out.println(" por favor, entre com uma posição válida, num range de 1 a 3");
+                            System.out.println();
+                            System.out.print(" #askPosição_vertical# : Entre com a posição Vertical "); // TAG
+                            posicao_x = input.nextInt();
+                            
+                        }
+
                     }
 
                     // Convertendo para String
@@ -142,7 +166,10 @@ public class Cliente {
                         break;
                     }
                     System.out.println();
+                    if(contador % 2 == 0){
                     System.out.println(" #posicoesMaquina/# : Abaixo, a jogada do computador!");
+
+                    }
                     contador++;
 
 
@@ -177,6 +204,10 @@ public class Cliente {
                 "as verticais com um mesmo símbolo (X ou O) e impedir que seu adversário faço isso "+
                 "primeiro que você.");
                 System.out.println();
+            }
+            if(responseFromServer.equals("VERSAO")){
+                     System.out.println();
+                      System.out.println("1.0");
             }
             
         }catch(IOException e){
