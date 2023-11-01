@@ -73,11 +73,11 @@ public class Cliente {
                     String matriz[][] = new String[3][3];
                     boolean sair = false;
                     int IDCliente;
-
-                    IDCliente = fromServer.readInt();
                     int aux1 = 0;
                     int aux2 = 0;
-                    if(IDCliente == 0){
+                    //IDCliente = fromServer.readInt();
+                    
+                  
                     System.out.println("[#EntradaPos1/#] digite a posição orizontal ");
                    int posY = posicao.nextInt();
                     toServer.writeInt(posY);
@@ -86,12 +86,12 @@ public class Cliente {
                     toServer.writeInt(posX);
                     fromServer.readInt();
                     matriz[posY][posX] = "X";
-                    aux1 = fromServer.readInt();
-                    aux2 = fromServer.readInt();
-                    matriz[aux1][aux2] = "O";
-                    }else if(IDCliente == 1){
+                    //aux1 = fromServer.readInt();
+                   // aux2 = fromServer.readInt();
+                    //matriz[aux1][aux2] = "O";
+                    
                         
-                    }
+                  
                     
             }
             else if(responseFromServer.equals("JOGAR1")){

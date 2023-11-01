@@ -157,11 +157,11 @@ public class ThreadSockets extends Thread{
 								System.out.println(posicao_x1);
 								matriz[posicao_y1 - 1][posicao_x1 - 1] = "X";
 								
-								posC1C2[0] = posicao_y1;
-								posC1C2[1] = posicao_x1;
-								outputStream = new DataOutputStream(jogadores[1].getOutputStream());
-								outputStream.writeInt(posC1C2[0]);
-								outputStream.writeInt(posC1C2[1]);
+								//posC1C2[0] = posicao_y1;
+								//posC1C2[1] = posicao_x1;
+								//outputStream = new DataOutputStream(jogadores[1].getOutputStream());
+								//outputStream.writeInt(posC1C2[0]);
+								//outputStream.writeInt(posC1C2[1]);
 
 						}else if(IDCliente == 1){
 
@@ -170,9 +170,10 @@ public class ThreadSockets extends Thread{
 								posicao_x1 = (int) readerC1.readInt();
 								System.out.println(posicao_x1);
 								matriz[posicao_y1 - 1][posicao_x1 - 1] = "O";
-								posC1C2[3] = posicao_y1;
-								posC1C2[4] = posicao_x1;
-								responseToClientC1 = "ENVIAR1";
+								
+								//posC1C2[3] = posicao_y1;
+								//posC1C2[4] = posicao_x1;
+								//responseToClientC1 = "ENVIAR1";
 						}
 								
 	}	
