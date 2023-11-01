@@ -41,12 +41,11 @@ public class Cliente {
             System.out.flush();
             userInput = inFromUser.readLine().replace(" ", "");// aqui pega a string !!!!
             userInput = userInput.substring(userInput.indexOf("#")+1, userInput.indexOf("/#"));
-
-            if (userInput.equalsIgnoreCase("quit")) {
+             
+             if (userInput.equalsIgnoreCase("QUIT")) {
                 break;
             }
- 
-            
+    
             // Enviando entrada do usuário para o servidor
             toServer = new DataOutputStream(socket.getOutputStream()); 
             toServer.writeUTF(userInput);
@@ -56,6 +55,7 @@ public class Cliente {
             fromServer = new DataInputStream (socket.getInputStream());
             String responseFromServer = (String) fromServer.readUTF();
             System.out.println("[TCPClient] resposta: [" + responseFromServer + "], do servidor.");
+           
 
             try{
             if(responseFromServer.equals("LOGIN")){
@@ -66,26 +66,33 @@ public class Cliente {
                 /// o que posso fazer aqui é o servidor pegar o nome dos clientes e retornar para os 2 clientes a lista de nomes para que a thread possa
             }
             else if(responseFromServer.equals("JOGAR")){
+               
+                
                     String mensagem;
                     Scanner posicao = new Scanner(System.in);
                     String matriz[][] = new String[3][3];
                     boolean sair = false;
-                    
-                    //mensagem = fromServer.readUTF();
-                    //System.out.println(mensagem);
+                    int IDCliente;
+
+                    IDCliente = fromServer.readInt();
+                    int aux1 = 0;
+                    int aux2 = 0;
+                    if(IDCliente == 0){
                     System.out.println("[#EntradaPos1/#] digite a posição orizontal ");
                    int posY = posicao.nextInt();
                     toServer.writeInt(posY);
-                    //System.out.println("[#EntradaPos1/#] Digite uma posição vertical");
-                  // mensagem = fromServer.readUTF();
                     System.out.println("[#EntradaPos2/#] digite a posição Vertical ");
                     int posX = posicao.nextInt();
                     toServer.writeInt(posX);
-                    fromServer.readUTF();
-                   
-                   
-   
-                  
+                    fromServer.readInt();
+                    matriz[posY][posX] = "X";
+                    aux1 = fromServer.readInt();
+                    aux2 = fromServer.readInt();
+                    matriz[aux1][aux2] = "O";
+                    }else if(IDCliente == 1){
+                        
+                    }
+                    
             }
             else if(responseFromServer.equals("JOGAR1")){
                 String mensagem;

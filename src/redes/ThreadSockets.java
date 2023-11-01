@@ -19,21 +19,32 @@ import jogoDaVelha.Jogo;
 public class ThreadSockets extends Thread{
 	
 	private Socket cliente = null;
-	private int contadorCliente = 0; 
+	private int IDCliente = 0;
+	//private ArrayList <Socket> contadorClienteL  = new ArrayList(2);
 	private static String nomes [] = new String[3];
 	private String nomeJogador = "";
 	private String nomeJogador2 = "";
-	private static Socket jogadores[] = new Socket[9];
+	private Socket jogadores[] = new Socket[2];
+
+	
 
 	public ThreadSockets(Socket s){
 		this.cliente = s;
 	}
 
-	public ThreadSockets(Socket socketC, int contadorCliente){
+	public ThreadSockets(Socket socketC, int IDCliente){
 		this.cliente = socketC;
-		this.contadorCliente = contadorCliente;
+		this.IDCliente = IDCliente;
 	}
-	
+	public ThreadSockets(Socket x, Socket o){
+		this.jogadores[0] = x;
+		this.jogadores[1] = o;
+		
+	}
+	/*public ThreadSockets(Socket socketC, ArrayList<Socket> IDCliente){
+		this.cliente = socketC;
+		this.IDClienteL = IDCliente;
+	}*/
 	public String[] getNomes() {
 		return nomes;
 	}
@@ -43,12 +54,7 @@ public class ThreadSockets extends Thread{
 		this.nomes = nomes;
 	}
 
-	public ThreadSockets(Socket s, String nomes[]){
-		this.cliente = s;
-		this.nomes[0] = nomes[0];
-		this.nomes[1] = nomes[1];
-		//this.nomes[1] = nomes[1];
-	}
+	
 	
 	public String getNomeJogador() {
 		return nomeJogador;
@@ -81,33 +87,27 @@ public class ThreadSockets extends Thread{
 
 
 			while (true){
-			
+			String[][] matriz = new String[3][3];
 			String responseToClientC1 = "";
        		String nomeCliente1 = "";
        		DataOutputStream outputStream = null;// Fluxo de saída para o cliente
-				
-			//if(contadorCliente % 2 == 0){
-				
-					//contadorCliente = 0;
-			//}else{
-					//contadorCliente = 1;
-			//}
 
-                    jogadores[contadorCliente] = getCliente();
+
+                 
 					/////// TRATA AS INFORMAÇÕES DO  CLIENTE  QUE SE CONECTA //////////
-					DataInputStream readerC1 = new DataInputStream (jogadores[contadorCliente].getInputStream()); // serve para que eu consiga ler o que foi enviado pelo cliente
+					DataInputStream readerC1 = new DataInputStream (jogadores[IDCliente].getInputStream()); // serve para que eu consiga ler o que foi enviado pelo cliente
 					String clientRequestC1 = (String) readerC1.readUTF();// Mensagem do cliente
 					String novaMensagemC1 = clientRequestC1;
-					if(contadorCliente % 2 == 0)
+					if(IDCliente % 2 == 0)
 					System.out.println("[TCPServer - Thread] pegou solicitação [" + novaMensagemC1 + "] do cliente X .");
 					else
 					System.out.println("[TCPServer - Thread] pegou solicitação [" + novaMensagemC1 + "] do cliente O .");
 
 					// Enviando resposta ao cliente
-					outputStream = new DataOutputStream (jogadores[contadorCliente].getOutputStream());
+					outputStream = new DataOutputStream (jogadores[IDCliente].getOutputStream());
 					responseToClientC1 = novaMensagemC1.toUpperCase();
-					//System.out.println("[TCPServer - Thread] enviando resposta [" + responseToClientC1 + "] para o cliente " + contadorCliente + ".");
-					if(contadorCliente % 2 == 0)
+
+					if(IDCliente % 2 == 0)
 					System.out.println("[TCPServer - Thread] enviando resposta [" + responseToClientC1 + "] para o cliente X .");
 					else
 					System.out.println("[TCPServer - Thread] enviando resposta [" + responseToClientC1 + "] para o cliente O .");
@@ -121,71 +121,63 @@ public class ThreadSockets extends Thread{
 						
 						// Lê o nome do cliente e aguarda o outro fazer o login para mandar iniciar o jogo.
 						nomeCliente1 = (String) readerC1.readUTF();
-						if(contadorCliente % 2 == 0){
+						if(IDCliente % 2 == 0){
 						System.out.println("[#PegaJogadorX/#] Nome do jogador X é  -> "  + nomeCliente1);  // *** um problema aqui é que eu n da pra passar essa lista para a thread executar o jogo antes do outro cliente se conectar
-						}else if(contadorCliente % 2 != 0){
+						}else if(IDCliente % 2 != 0){
 						System.out.println("[#PegaJogadorO/#] Nome do jogador O é  -> "  + nomeCliente1);  // *** um problema aqui é que eu n da pra passar essa lista para a thread executar o jogo antes do outro cliente se conectar
 						}
+						nomes[IDCliente] = nomeCliente1;// colocando no arrey de nomes para que eu possa passar para a thread
+						//IDCliente=1;
 						
-						nomes[contadorCliente] = nomeCliente1;// colocando no arrey de nomes para que eu possa passar para a thread
-						
-					}/*else if(responseToClientC1.equals("JOGAR")){
+					}
+					
+					if(responseToClientC1.equals("JOGAR")){
 
 							
 							Jogo j = new Jogo();
 							Scanner input = new Scanner (System.in);
-							String[][] matriz = new String[3][3];
-							String opc = "S";
+							
 							String simbolo = "X";
 							boolean sair = false;	         
-							int posicao_y = 0;
-							int posicao_x = 0;
+							int posicao_y1 = 0;
+							int posicao_x1 = 0;
+							int posicao_y2 = 0;
+							int posicao_x2 = 0;
+							int posC1C2[] = new int[4];
 							
-				//for(int N = 0; N<2 ; N++){
-							
-					do{
-							if(contadorCliente == 0){
-
-							outputStream.writeUTF("JOGAR");
-							outputStream = new DataOutputStream(jogadores[0].getOutputStream());
-							System.out.println("teste de chegada C1");
-							//outputStream.writeUTF("[#EntradaPos1/#] digite a posição orizontal");
-							posicao_y = (int) readerC1.readInt();
-							System.out.println(posicao_y);
-							//outputStream.writeUTF("[#EntradaPos2/#] digite a posição vertical");
-							posicao_x = (int) readerC1.readInt();
-							System.out.println(posicao_x);
-							matriz[posicao_y - 1][posicao_x - 1] = "X";
-							sair = j.validacao(matriz, sair, simbolo);
-							
-							  }else if(contadorCliente == 1){
-
-								
-							outputStream = new DataOutputStream(jogadores[1].getOutputStream());
-							System.out.println("teste de chegada C2");
-							outputStream.writeUTF("JOGAR");
-							//outputStream.writeUTF("[#EntradaPos1/#] digite a posição orizontal");
-							posicao_y = (int) readerC1.readInt();
-							System.out.println(posicao_y);
-							//outputStream.writeUTF("[#EntradaPos2/#] digite a posição vertical");
-							posicao_x = (int) readerC1.readInt();
-							System.out.println(posicao_x);
-							//simbolo = "O";
-							matriz[posicao_y - 1][posicao_x - 1] = "O";
-							sair = j.validacao(matriz, sair, simbolo);
-							}
-							
-						}while(contadorCliente == 1);
-							
-					//matriz[posicao_y - 1][posicao_x - 1] = simbolo;
 					
 						
-	        
-			
-						
-	}	*/		
+					
+					
+								
+						if(IDCliente == 0){
+								posicao_y1 = (int) readerC1.readInt();
+								System.out.println(posicao_y1);
+								posicao_x1 = (int) readerC1.readInt();
+								System.out.println(posicao_x1);
+								matriz[posicao_y1 - 1][posicao_x1 - 1] = "X";
+								
+								posC1C2[0] = posicao_y1;
+								posC1C2[1] = posicao_x1;
+								outputStream = new DataOutputStream(jogadores[1].getOutputStream());
+								outputStream.writeInt(posC1C2[0]);
+								outputStream.writeInt(posC1C2[1]);
 
-		 
+						}else if(IDCliente == 1){
+
+								posicao_y1 = (int) readerC1.readInt();
+								System.out.println(posicao_y1);
+								posicao_x1 = (int) readerC1.readInt();
+								System.out.println(posicao_x1);
+								matriz[posicao_y1 - 1][posicao_x1 - 1] = "O";
+								posC1C2[3] = posicao_y1;
+								posC1C2[4] = posicao_x1;
+								responseToClientC1 = "ENVIAR1";
+						}
+								
+	}	
+			
+
 			}catch (IOException e){
 							
 							System.out.println(" ### PROBLEMAS NO BLOCO DE TAGS NO SERVIDOR, POR FAVOR REVEJA!!!! ### ");
@@ -197,6 +189,15 @@ public class ThreadSockets extends Thread{
 
 		              //Lembrar que tenho que fechar essa thread em algum lugar 
 
+					  if(IDCliente ==  0){
+							 IDCliente = 1;
+						System.out.println(" vez do cliente [o]");
+					  }else if(IDCliente == 1){
+							IDCliente = 0;
+							System.out.println(" vez do cliente [x]");
+					  }
+					 
+					  
 				}
 
 			}catch(IOException ioe) {
