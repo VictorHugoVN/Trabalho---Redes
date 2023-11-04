@@ -10,6 +10,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
 
+import jogoDaVelha.Jogo;
+
 
 
 public class Cliente {
@@ -22,7 +24,7 @@ public class Cliente {
         DataOutputStream toServer = null; 
         DataInputStream  fromServer = null;
         System.out.println("Cliente TCP iniciado, usando servidor: " + serverName + ", Porta: " + port);
- 
+        Jogo j = new Jogo();
         BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
         String userInput = "";
         String mensagemS;
@@ -68,31 +70,20 @@ public class Cliente {
             else if(responseFromServer.equals("JOGAR")){
                
                 
-                    String mensagem;
+                    
                     Scanner posicao = new Scanner(System.in);
                     String matriz[][] = new String[3][3];
                     boolean sair = false;
-                    int IDCliente;
-                    int aux1 = 0;
-                    int aux2 = 0;
-                    //IDCliente = fromServer.readInt();
-                    
-                  
-                    System.out.println("[#EntradaPos1/#] digite a posição orizontal ");
+                     System.out.println("[#EntradaPos1/#] digite a posição orizontal ");
                    int posY = posicao.nextInt();
                     toServer.writeInt(posY);
                     System.out.println("[#EntradaPos2/#] digite a posição Vertical ");
                     int posX = posicao.nextInt();
                     toServer.writeInt(posX);
-                    fromServer.readInt();
-                    matriz[posY][posX] = "X";
-                    //aux1 = fromServer.readInt();
-                   // aux2 = fromServer.readInt();
-                    //matriz[aux1][aux2] = "O";
-                    
-                        
-                  
-                    
+                    //fromServer.readInt();
+                    //matriz[posY][posX] = "X";
+                    //j.validacao(matriz, sair, "X");
+    
             }
             else if(responseFromServer.equals("JOGAR1")){
                 String mensagem;

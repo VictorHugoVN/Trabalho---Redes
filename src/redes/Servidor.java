@@ -5,8 +5,8 @@ import java.net.*;
 import java.util.ArrayList;
 public class Servidor {
     
-
-    public static void main(String args[]  ) throws Exception {
+	
+    public static void main(String args[]) throws Exception {
         
         int port = 8724;
         Socket socketC1 = null;

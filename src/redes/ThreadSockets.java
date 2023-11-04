@@ -25,7 +25,8 @@ public class ThreadSockets extends Thread{
 	private String nomeJogador = "";
 	private String nomeJogador2 = "";
 	private Socket jogadores[] = new Socket[2];
-
+	Keep k;
+	ArrayList<Integer> listaPos = new ArrayList<>(10);
 	
 
 	public ThreadSockets(Socket s){
@@ -144,38 +145,36 @@ public class ThreadSockets extends Thread{
 							int posicao_y2 = 0;
 							int posicao_x2 = 0;
 							int posC1C2[] = new int[4];
-							
-					
-						
-					
-					
-								
+		
 						if(IDCliente == 0){
+							
 								posicao_y1 = (int) readerC1.readInt();
 								System.out.println(posicao_y1);
 								posicao_x1 = (int) readerC1.readInt();
 								System.out.println(posicao_x1);
-								matriz[posicao_y1 - 1][posicao_x1 - 1] = "X";
-								
-								//posC1C2[0] = posicao_y1;
-								//posC1C2[1] = posicao_x1;
-								//outputStream = new DataOutputStream(jogadores[1].getOutputStream());
-								//outputStream.writeInt(posC1C2[0]);
-								//outputStream.writeInt(posC1C2[1]);
+								//k = new Keep(posicao_y1, posicao_x1);
+								//k.AddPosYX();
+								listaPos.add(posicao_y1);
+								listaPos.add(posicao_x1);
+								//System.out.println(Thread.currentThread());;
+						
 
 						}else if(IDCliente == 1){
-
 								posicao_y1 = (int) readerC1.readInt();
 								System.out.println(posicao_y1);
 								posicao_x1 = (int) readerC1.readInt();
 								System.out.println(posicao_x1);
-								matriz[posicao_y1 - 1][posicao_x1 - 1] = "O";
+								listaPos.add(posicao_y1);
+								listaPos.add(posicao_x1);
+								System.out.println(" os elementos da lista : " + listaPos);
 								
-								//posC1C2[3] = posicao_y1;
-								//posC1C2[4] = posicao_x1;
-								//responseToClientC1 = "ENVIAR1";
 						}
-								
+
+						
+
+						
+						
+					
 	}	
 			
 

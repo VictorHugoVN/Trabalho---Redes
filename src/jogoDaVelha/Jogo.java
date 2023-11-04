@@ -37,7 +37,7 @@ public class Jogo implements Serializable{
 
 		
 	
-	public void game(String jogador1, String jogador2, int posicao_y, int posicao_x, int contCliente){
+	public void game(String jogador1, String jogador2, int posicao_y, int posicao_x /*, int contCliente*/){
 
 		Scanner input = new Scanner (System.in);
 		String[][] matriz = new String[3][3];
@@ -55,14 +55,16 @@ public class Jogo implements Serializable{
 
          try {
          	do {    
-        		 //for (int cont = 0; cont < 9; cont++) { 
-        			 
+        		 for (int cont = 0; cont < 9; cont++) { 
+        			 System.out.println("horizontal  = " + posicao_y);
+					 System.out.println("Vertical  = " + posicao_x);
+
 					matriz[posicao_y - 1][posicao_x - 1] = simbolo;
 					//questions(simbolo, jogador1, jogador2, cont, posicao_y, posicao_x, contCliente);
 					sair = validacao(matriz, sair, simbolo);
 	
 	                
-	        // }
+	         }
 	
 	           opc = winner(sair, simbolo, input, matriz);
 			   
