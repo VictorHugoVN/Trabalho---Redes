@@ -167,14 +167,10 @@ public class ThreadSockets extends Thread{
 								listaPos.add(posicao_y1);
 								listaPos.add(posicao_x1);
 								System.out.println(" os elementos da lista : " + listaPos);
+								matriz[listaPos.get(0)][listaPos.get(1)] = "X";
+								matriz[listaPos.get(2)][listaPos.get(3)] = "O";
 								
-						}
-
-						
-
-						
-						
-					
+						}	
 	}	
 			
 
