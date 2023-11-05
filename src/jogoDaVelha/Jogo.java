@@ -62,7 +62,7 @@ public class Jogo implements Serializable{
 					matriz[posicao_y - 1][posicao_x - 1] = simbolo;
 					matriz[posicao_y1-1][posicao_X1 - 1] = simbolo;
 					//questions(simbolo, jogador1, jogador2, cont, posicao_y, posicao_x, contCliente);
-					sair = validacao(matriz, sair, simbolo);
+					//sair = validacao(matriz, sair, simbolo);
 
 	         }
 	
@@ -110,7 +110,12 @@ public class Jogo implements Serializable{
 					
 	}
 
-	public boolean validacao(String matriz[][], boolean sair, String simbolo){
+	/**
+	 * @param matriz
+	 * @param sair
+	 * @param simbolo
+	 */
+	public void validacao(String matriz[][], boolean sair, String simbolo){
 
 		 for (int y = 0; y < 3; y++) {
 	                     for (int x = 0; x < 3; x++) {
@@ -130,6 +135,7 @@ public class Jogo implements Serializable{
 	                             System.out.print("[_]");
 	                         else
 	                             System.out.print("[" + matriz[y][x] + "]");
+								 simbolo = matriz[y][x] ;
 	                     }
 	
 	                     if (sair == true)
@@ -138,20 +144,20 @@ public class Jogo implements Serializable{
 	                     System.out.println();
 	                 }	
 
-					  if (sair == true) 
-	                  // break   
-					  return sair;
+					  //if (sair == true) 
+	                  //break; 
+					 // return sair;
 	
-	                 if (simbolo == "X") {
-	                     simbolo = "O";
-	                 } else {
-	                     simbolo = "X";
-	                 }
-					 return sair;
+	                 //if (simbolo == "X") {
+	                     //simbolo = "O";
+	                // } else {
+	                     //simbolo = "X";
+	                // }
+					winner(sair, simbolo, null, matriz);
 	}
 
 public String winner(boolean sair, String simbolo,Scanner input, String[][] matriz){
-		String opc;
+		String opc = "fim";
 			 if (sair == true) {
 	                 if(simbolo == "X")
 	                     System.out.println("X ganhou!!");
@@ -159,15 +165,15 @@ public String winner(boolean sair, String simbolo,Scanner input, String[][] matr
 	                     System.out.println(" O ganhou!!");
 	             }
 	
-	             System.out.print("Deseja começar novamente [S] ou [N]? ");
-	             opc = input.next();
+	            // System.out.print("Deseja começar novamente [S] ou [N]? ");
+	            // opc = input.next();
 	
-	             sair = false;
-	             simbolo = "X";
-	             for (int y = 0; y < 3; y++) {
-	                 for (int x = 0; x < 3; x++)
-	                     matriz[y][x] = null;
-	             }
+	             //sair = false;
+	             //simbolo = "X";
+	            // for (int y = 0; y < 3; y++) {
+	              //   for (int x = 0; x < 3; x++)
+	                   //  matriz[y][x] = null;
+	            // }
 				 return opc;
 	}
 

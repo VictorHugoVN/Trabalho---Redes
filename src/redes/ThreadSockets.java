@@ -21,14 +21,21 @@ public class ThreadSockets extends Thread{
 	
 	private Socket cliente = null;
 	private int IDCliente = 0;
-	//private ArrayList <Socket> contadorClienteL  = new ArrayList(2);
 	private static String nomes [] = new String[3];
 	private String nomeJogador = "";
 	private String nomeJogador2 = "";
 	private Socket jogadores[] = new Socket[2];
-	Keep k;
 	ArrayList<Integer> listaPos = new ArrayList<>(10);
+	/*private static ArrayList<Integer> listaPos = new ArrayList<>(10);
 	
+	public static ArrayList<Integer> getListaPos() {
+		return listaPos;
+	}
+
+	public static void setListaPos(ArrayList<Integer> listaPos) {
+		ThreadSockets.listaPos = listaPos;
+	}*/
+
 
 	public ThreadSockets(Socket s){
 		this.cliente = s;
@@ -43,10 +50,7 @@ public class ThreadSockets extends Thread{
 		this.jogadores[1] = o;
 		
 	}
-	/*public ThreadSockets(Socket socketC, ArrayList<Socket> IDCliente){
-		this.cliente = socketC;
-		this.IDClienteL = IDCliente;
-	}*/
+	
 	public String[] getNomes() {
 		return nomes;
 	}
@@ -130,6 +134,13 @@ public class ThreadSockets extends Thread{
 						}
 						nomes[IDCliente] = nomeCliente1;// colocando no arrey de nomes para que eu possa passar para a thread
 						//IDCliente=1;
+							if(IDCliente == 1){
+						ObjectOutputStream outputStream1 = new ObjectOutputStream(jogadores[0].getOutputStream());
+						ObjectOutputStream outputStream2 = new ObjectOutputStream(jogadores[1].getOutputStream());
+						outputStream1.writeObject(nomes);
+						outputStream2.writeObject(nomes);
+							}
+						
 						
 					}
 					
@@ -138,7 +149,6 @@ public class ThreadSockets extends Thread{
 							
 							Jogo j = new Jogo();
 							Scanner input = new Scanner (System.in);
-							
 							String simbolo = "X";
 							boolean sair = false;	         
 							int posicao_y1 = 0;
@@ -154,8 +164,6 @@ public class ThreadSockets extends Thread{
 								System.out.println(posicao_y1);
 								posicao_x1 = (int) readerC1.readInt();
 								System.out.println(posicao_x1);
-								//k = new Keep(posicao_y1, posicao_x1);
-								//k.AddPosYX();
 								listaPos.add(posicao_y1);
 								listaPos.add(posicao_x1);
 								//System.out.println(Thread.currentThread());;
@@ -170,6 +178,9 @@ public class ThreadSockets extends Thread{
 								listaPos.add(posicao_y1);
 								listaPos.add(posicao_x1);
 								System.out.println(" os elementos da lista : " + listaPos);
+								if(matriz[1][1] == null){
+
+								}
 								matriz[listaPos.get(0)-1][listaPos.get(1)-1] = "X";
 								matriz[listaPos.get(2)-1][listaPos.get(3)-1] = "O";
 
@@ -177,6 +188,7 @@ public class ThreadSockets extends Thread{
 								ObjectOutputStream outputStream2 = new ObjectOutputStream(jogadores[1].getOutputStream());
 								outputStream1.writeObject(listaPos);
 								outputStream2.writeObject(listaPos);
+								System.out.println(listaPos);
 								j.validacao(matriz, sair, simbolo);
 								//j.game(nomes[0], nomes [1], listaPos.get(0), listaPos.get(1), listaPos.get(2), listaPos.get(3));
 								outputStream1.writeObject(j);
@@ -184,69 +196,7 @@ public class ThreadSockets extends Thread{
 								
 						}	
 					}	
-					if(responseToClientC1.equals("JOGAR1")){
-
-							
-							Jogo j = new Jogo();
-							Scanner input = new Scanner (System.in);
-							
-							String simbolo = "X";
-							boolean sair = false;	         
-							int posicao_y1 = 0;
-							int posicao_x1 = 0;
-							int posicao_y2 = 0;
-							int posicao_x2 = 0;
-							int posC1C2[] = new int[4];
-		
-							
-						if(IDCliente == 0){
-							
-								posicao_y1 = (int) readerC1.readInt();
-								System.out.println(posicao_y1);
-								posicao_x1 = (int) readerC1.readInt();
-								System.out.println(posicao_x1);
-								//k = new Keep(posicao_y1, posicao_x1);
-								//k.AddPosYX();
-								listaPos.add(posicao_y1);
-								listaPos.add(posicao_x1);
-								//System.out.println(Thread.currentThread());;
-								matriz[listaPos.get(0)-1][listaPos.get(1)-1] = "X";
-								//matriz[listaPos.get(4)-1][listaPos.get(5)-1] = "X";
-								//matriz[listaPos.get(6)-1][listaPos.get(7)-1] = "O";
-								ObjectOutputStream outputStream1 = new ObjectOutputStream(jogadores[0].getOutputStream());
-								ObjectOutputStream outputStream2 = new ObjectOutputStream(jogadores[1].getOutputStream());
-								outputStream1.writeObject(listaPos);
-								outputStream2.writeObject(listaPos);
-								j.validacao(matriz, sair, simbolo);
-								//j.game(nomes[0], nomes [1], listaPos.get(0), listaPos.get(1), listaPos.get(2), listaPos.get(3));
-								outputStream1.writeObject(j);
-								outputStream2.writeObject(j);
-						
-
-						}else if(IDCliente == 1){
-								posicao_y1 = (int) readerC1.readInt();
-								System.out.println(posicao_y1);
-								posicao_x1 = (int) readerC1.readInt();
-								System.out.println(posicao_x1);
-								listaPos.add(posicao_y1);
-								listaPos.add(posicao_x1);
-								System.out.println(" os elementos da lista : " + listaPos);
-								matriz[listaPos.get(0)-1][listaPos.get(1)-1] = "X";
-								matriz[listaPos.get(2)-1][listaPos.get(3)-1] = "O";
-								//matriz[listaPos.get(4)-1][listaPos.get(5)-1] = "X";
-								//matriz[listaPos.get(6)-1][listaPos.get(7)-1] = "O";
-								
-								ObjectOutputStream outputStream1 = new ObjectOutputStream(jogadores[0].getOutputStream());
-								ObjectOutputStream outputStream2 = new ObjectOutputStream(jogadores[1].getOutputStream());
-								outputStream1.writeObject(listaPos);
-								outputStream2.writeObject(listaPos);
-								j.validacao(matriz, sair, simbolo);
-								//j.game(nomes[0], nomes [1], listaPos.get(0), listaPos.get(1), listaPos.get(2), listaPos.get(3));
-								outputStream1.writeObject(j);
-								outputStream2.writeObject(j);
-								
-						}	
-					}
+					
 
 			}catch (IOException e){
 							
