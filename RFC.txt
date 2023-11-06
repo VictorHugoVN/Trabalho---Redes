@@ -22,18 +22,19 @@ Category: Informational                                October 30, 2023
 
 2. Objetivos e Escopo
 
-   O objetivo deste protocolo é permitir a jogabilidade assíncrona e síncrona
-   de jogos da velha entre um jogador e a prórpia máquina. Isso
+   O objetivo deste protocolo é permitir que usuários jogadores entendam as normas
+   adotadas pelo protocolo do jogo. Isso
    inclui a capacidade de iniciar, participar e concluir partidas de jogo da
    velha, gerenciar o estado do jogo, incluindo a detecção de vitória
-   ou empate. Em cada thread aberta por um jogador teremos uma partida entre
-   um jogador e a própria máquina, até o presente momento do desenvolvimento.
+   ou empate. Em cada thread aberta por dois jogadores teremos uma partida entre
+   dois jogadores distintos.
 
    O escopo deste protocolo inclui a definição de mensagens e comandos que
-   permitem que os jogadores interajam com o servidor de jogos e com
-   a máquina que será a oponente do jogador. As regras do jogo da velha, incluindo 
+   permitem que os jogadores interajam com o servidor de jogos e entre eles
+   mesmos como oponentes. As regras do jogo da velha, incluindo 
    o tamanho do tabuleiro, o número de jogadores e as condições de vitória ou empate,
    são consistentes com as regras tradicionais do jogo.
+
 
 3. Terminologia
 
@@ -51,9 +52,18 @@ Category: Informational                                October 30, 2023
 	1.3. #SetSimbolo/#   : Será também emitida pelo servidor, escolhendo o simbolo o 	
     qual o jogador irá competir dentro da lógica do jogo;
 
+    1.4. #espera/#  : flag de espera emitida pelo servidor para que o primeiro usuário conectado 
+    aguarde o segundo uruário fazer login. 
 
 2 #jogar/# : Emitida pelo cliente, será o segundo passo necessário para o Game. 
 Como diz o verbo, será iniciado a partida do jogo;
+
+A seguir temos um ilustração do tabuleiro e a forma com a qual deve ser adicionada as posições pelos jogadores:
+           1  2  3   
+       1. [X][_][_]      Nenhuma posição fora do range de 1 a 3, será aceita pelo jogo.
+       2. [_][O][_]
+       3. [_][_][_]
+
 
 		2.1 #askPosicao_horizontal/#   : Emitida pelo Servidor, para que o cliente
 		saiba quando adicionar a posição horizontal.
@@ -70,34 +80,27 @@ Como diz o verbo, será iniciado a partida do jogo;
         efetivamente da posição em questão que o cliente deseja adicionar o 			
         símbolo correspondente a ele.
 
-		2.5 #inicio/#  :  Emitida pelo servidor para sinalizar ao cliente que será dado 		
+		2.5.  #inicio/#  :  Emitida pelo servidor para sinalizar ao cliente que será dado 		
         início ao jogo.
+
+        2.6.  #Lista_jogadores/# : De forma estática e innevitável, essa tag é etimida pelo prórpio servidor
+        para que os clientes saibam quais sao os jogadores do jogo
 	
-		2.6 #posicoesMaquina/# : Emitido pelo servidor para demonstre onde o 			
-        computador fez sua escolha de jogo.
+        2.7 #Simbolo_vencedor/# : Emitida pelo servidor para que represente a vitória do simbolo do jogador vencedor.
 
-        2.7 #Computador_venceu/# : Emitida pelo Servidor para que represente a vitória da máquina.
-
-        2.8 #NomeJogador_venceu/# : Emitida pelo servidor para que represente a vitória do usuário.
-
-        2.9. #empate/# : Emitida pelo servidor para que sinaliza o empate do jogo.
+        2.8. #empate/# : Emitida pelo servidor para que sinaliza o empate do jogo.
         
-        2.10 #derrota_maquina/#  :  Emitida pelo Servidor para representar a derrota da máquina.
+        2.9 #simbolo_derrotado/#  :  Emitida pelo servidor para sinalizar a derrota do jogador.
 
-        2.11 #derrota_Jogador/#  :  Emitida pelo servidor para sinalizar a derrota do jogador.
+        2.10 [#erroPosicao/#] : Emitida pelo servidor em caso de algum dos jogadores tentar adicionar posições que ja estoa preenchidas na matriz
 
-3 #historia/# : Emitida pelo cliente. Conta um pouco da história do jogo (é preciso ser sem acento).
+3. #historia/# : Emitida pelo cliente. Conta um pouco da história do jogo (é preciso ser sem acento).
 
-4 #regras/# : Emitida pelo cliente. Mostra as regras do jogo
+4. #regras/# : Emitida pelo cliente. Mostra as regras do jogo
 
-5 #quit/# : Emitida pelo cliente. Usada fora do laço do jogo
+5. #quit/# : Emitida pelo cliente. Usada fora do laço do jogo
 
-6 #versão/# :  1.0 
-
-
-
-
-10 
+6. #versão/# :  1.0 
 
 4. Comunicação do Protocolo
 
@@ -106,4 +109,3 @@ Como diz o verbo, será iniciado a partida do jogo;
 
    O documento expõe por meio das tags especificações detalhadas do protocolo,
    incluindo mensagens, comandos, respostas e detalhes de implementação.
-.

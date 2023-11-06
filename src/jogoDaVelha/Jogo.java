@@ -159,10 +159,16 @@ public class Jogo implements Serializable{
 public String winner(boolean sair, String simbolo,Scanner input, String[][] matriz){
 		String opc = "fim";
 			 if (sair == true) {
-	                 if(simbolo == "X")
-	                     System.out.println("X ganhou!!");
-	                 else
-	                     System.out.println(" O ganhou!!");
+	                 if(simbolo == "X"){
+							System.out.println("#Simbolo_vencedor/#  X ganhou!!");
+						 System.out.println(" #simbolo_derrotado/#  O foi derrotado.");
+					 }else if(simbolo == "O"){
+							System.out.println("#Simbolo_vencedor/# O ganhou!!");
+							System.out.println("#simbolo_derrotado/#  X foi derrotado");
+					 }else if(simbolo == "E"){
+							System.out.println("#empate/#  houve um empate");
+					 }
+	                     
 	             }
 	
 	            // System.out.print("Deseja começar novamente [S] ou [N]? ");

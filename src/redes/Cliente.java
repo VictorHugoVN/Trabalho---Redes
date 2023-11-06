@@ -70,18 +70,20 @@ public class Cliente {
                 
             if(responseFromServer.equals("LOGIN")){
                 // pegando nome
-                System.out.println("[#EntradaNome/#] Digite o seu nome: ");
+                System.out.println("[#askNome/#] Digite o seu nome: ");
                 System.out.flush();
+                System.out.println("[#GetNome/#]");
                 toServer.writeUTF(inFromUser.readLine()); //envia para o servidor o nome do cliente
-                System.out.println(" Aguarde um parceiro de jogo ");
+                System.out.println("[#Espera/#] Aguarde um parceiro de jogo ");
                     ObjectInputStream fromServer2 = new ObjectInputStream(socket.getInputStream());  
                     nomes = (String[]) fromServer2.readObject();
                     
+                    System.out.println("        #Lista_jogadores/# ");
                     System.out.println("___________________________");
-                    System.out.println("|         Jogadores       | ");
+                    System.out.println("|         Jogadores       |");
                     System.out.println("---------------------------");
-                    System.out.println("    Jogador X -> "+nomes[0]);
-                    System.out.println("    Jogador O -> "+nomes[1]);
+                    System.out.println("#SetSimbolo/# Jogador X -> "+nomes[0]);
+                    System.out.println("#SetSimbolo/# Jogador O -> "+nomes[1]);
                     System.out.println("____________________________");
                     System.err.println();
                     System.out.println("digite #jogar/# para iniciar a proxima rodada");
@@ -97,33 +99,38 @@ public class Cliente {
                     String simbolo = "X";
                     boolean sair = false;
                     String opc;
-                    System.out.println("[#EntradaPos1/#] digite a posição orizontal ");
+                    
+                    System.out.println("[#askPosicao_horizontal/#] digite a posição orizontal ");
+                    System.out.println("[#getPosição_hotizontal/#]");
                     int posY = posicao.nextInt();
                     if(posY>3 || posY<1){
-                        System.out.println("Posição inválida!! Por favor digite a posição num range de 1 a 3");
+                        System.out.println("[#erroPosicao/#] Posição inválida!! Por favor digite a posição num range de 1 a 3");
                         System.out.println();
-                        System.out.println("[#EntradaPos1/#] digite a posição orizontal ");
+                        System.out.println("[#askPosicao_vertical/#] digite a posição orizontal ");
                         posY = posicao.nextInt();
                     }
                     
-                    System.out.println("[#EntradaPos2/#] digite a posição Vertical ");
+                    System.out.println("[#askPosicao_Vertical/#] digite a posição Vertical ");
+                    System.out.println("[#getPosição_vertical/#]");
                     int posX = posicao.nextInt();
                     if(posX>3 || posX<1){
-                        System.out.println("Posição inválida!! Por favor digite a posição num range de 1 a 3");
+                        System.out.println("[#erroPosicao/#] Posição inválida!! Por favor digite a posição num range de 1 a 3");
                         System.out.println();
-                        System.out.println("[#EntradaPos2/#] digite a posição Vertical ");
-                    
+                        System.out.println("[ #askPosicao_vertical/#] digite a posição Vertical ");
+                        System.out.println("[#getPosição_vertical/#]");
                          posX = posicao.nextInt();
                     }
 
                     if(matriz[posY-1][posX-1] == "X" || matriz[posY-1][posX-1] == "O"){
                         System.out.println();
-                        System.out.println("posições ja marcadas no tabuleiro, escolha outras posições!!");
+                        System.out.println("[#erroPosicao/#] posições ja marcadas no tabuleiro, escolha outras posições!!");
                         System.out.println();
-                        System.out.println("[#EntradaPos1/#] digite a posição orizontal ");
+                        System.out.println("[#askPosicao_horizontal/#] digite a posição orizontal ");
+                        System.out.println("[#getPosição_hotizontal/#]");
                         posY = posicao.nextInt();
                         System.out.println();
-                        System.out.println("[#EntradaPos2/#] digite a posição Vertical ");
+                        System.out.println("[#askPosicao_Vertical/#] digite a posição Vertical ");
+                        System.out.println("[#getPosição_vertical/#]");
                         posX = posicao.nextInt();
                     }
                     toServer.writeInt(posY);
@@ -157,6 +164,35 @@ public class Cliente {
                         break;
                         }*/
 
+                }
+                else if(responseFromServer.equals(("HISTORIA"))){
+                    System.out.println();
+                    System.out.println("Tem registros dele desde o século 14, lá no Egito. Só que foi mais pra frente, " +
+                    "já no século 19, na Inglaterra, que o jogo ficou popular mesmo." +
+                    "Era a brincadeira favorita da hora do chá das mulheres idosas, " + 
+                    "que adoravam praticar esse passatempo pra relaxar, " + 
+                    "e é daí que vem o nome: jogo da velha! " +
+                    "Quando as mulheres inglesas se reuniam na hora do chá para bordar tinha aquelas mais " +
+                    "velhas que não conseguiam mais fazer este ofício." +
+                    "Muito dessas senhoras já apresentavam problemas de vista e não enxergavam o suficiente para conseguir bordar. " +
+                    "A solução para conseguirem um novo passatempo foi jogar o jogo de velha.");
+                    System.out.println();
+    
+                }
+                else if(responseFromServer.equals("REGRAS")){
+                    System.out.println();
+                    System.out.println("Dois jogadores escolhem dois símbolo com que querem jogar. Normalmente"+
+                    "é usado as letras X e O. O material do jogo é um tabuleiro, que pode ser desenhado, "+
+                    "com três linhas e três colunas. Os espaços em branco dessas linhas e colunas serão " +
+                    "preenchidos com os símbolos escolhidos." +
+                    "O objetivo do jogo é preencher ou as linhas diagonais ou as horizontais ou "+
+                    "as verticais com um mesmo símbolo (X ou O) e impedir que seu adversário faço isso "+
+                    "primeiro que você.");
+                    System.out.println();
+                }
+                else if(responseFromServer.equals("VERSAO")){
+                         System.out.println();
+                          System.out.println("1.0");
                 }
     
             } 
